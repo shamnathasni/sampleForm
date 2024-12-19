@@ -141,8 +141,12 @@ const borrowerSchema = new mongoose.Schema(
         state: { type: String },
         zipCode: { type: String },
       },
-      canProvideInformation: { type: Boolean, required: true },
-      agreeToShareFinancialInfo: { type: Boolean, required: true },
+      canProvideInformation: { type: Boolean,
+        //  required: true
+         },
+      agreeToShareFinancialInfo: { type: Boolean, 
+        // required: true 
+      },
     },
     ApplicationType: {
       type: String,
