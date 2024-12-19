@@ -10,7 +10,9 @@ const employmentSchema = new mongoose.Schema({
     },
   
     // Employment - General Fields
-    employerName: { type: String, required: function() { return this.employmentType === 'Employment'; } },
+    employerName: { type: String, 
+      // required: function() { return this.employmentType === 'Employment'; } 
+    },
     employerAddress: {
       type: Object,
       adress:{
@@ -29,17 +31,25 @@ const employmentSchema = new mongoose.Schema({
     jobTitle: { type: String, required: function() { return this.employmentType === 'Employment' || this.employmentType === 'Independent Contractor'; } },
     yearsInProfession: { type: Number, required: function() { return this.employmentType === 'Employment' || this.employmentType === 'Independent Contractor'; } },
     isEmployerRelated: { type: Boolean, required: function() { return this.employmentType === 'Employment'; } }, // Is the employer a family member, property seller, agent, or other party to the transaction
-    payType: { type: String, enum: ['Salaried', 'Hourly'], required: function() { return this.employmentType === 'Employment'; } },
+    payType: { type: String, enum: ['Salaried', 'Hourly'], 
+      // required: function() { return this.employmentType === 'Employment'; } 
+    },
     annualBaseSalary: { type: Number, required: function() { return this.employmentType === 'Employment' && this.payType === 'Salaried'; } },
-    hourlyRate: { type: Number, required: function() { return this.employmentType === 'Employment' && this.payType === 'Hourly'; } },
-    hoursPerWeek: { type: Number, required: function() { return this.employmentType === 'Employment' && this.payType === 'Hourly'; } },
+    hourlyRate: { type: Number,
+      //  required: function() { return this.employmentType === 'Employment' && this.payType === 'Hourly'; } 
+      },
+    hoursPerWeek: { type: Number,
+      //  required: function() { return this.employmentType === 'Employment' && this.payType === 'Hourly'; } 
+      },
     annualOvertime: { type: Number },
     annualBonus: { type: Number },
     annualCommission: { type: Number },
     otherAnnualIncome: { type: Number },
   
     // Military Pay - Specific to Military Employment
-    rank: { type: String, required: function() { return this.employmentType === 'Military Pay'; } },
+    rank: { type: String,
+      //  required: function() { return this.employmentType === 'Military Pay'; } 
+      },
     branch: {
       type:Object,
         adress:{
@@ -58,14 +68,16 @@ const employmentSchema = new mongoose.Schema({
     specialPayDetails: [{
       type: String,
       enum: ['Flight Pay', 'Combat Pay', 'Hazard Pay', 'Overseas Pay', 'Prop Pay', 'Variable Housing Allowance', 'Clothes Allowance'],
-      required: function() { return this.employmentType === 'Military Pay' && this.specialPay; }
+      // required: function() { return this.employmentType === 'Military Pay' && this.specialPay; }
     }],
   
     // Independent Contractor - Specific to Independent Contractors
     grossAnnualIncome: { type: Number, required: function() { return this.employmentType === 'Independent Contractor'; } },
   
     // Business / Self-Employment - Specific to Business Owners
-    businessType: { type: String, enum: ['Sole Proprietor', 'LLC', 'S-Corp', 'Partnership'], required: function() { return this.employmentType === 'Business/Self-Employment'; } },
+    businessType: { type: String, enum: ['Sole Proprietor', 'LLC', 'S-Corp', 'Partnership'],
+      //  required: function() { return this.employmentType === 'Business/Self-Employment'; } 
+      },
     businessName: { type: String, required: function() { return this.employmentType === 'Business/Self-Employment'; } },
     businessAddress: {
       type:Object,
@@ -92,21 +104,21 @@ const employmentSchema = new mongoose.Schema({
   const NonEmploymentSchema = new mongoose.Schema({
     reasonForNonEmployment: { 
       type: String, 
-      required: true,
+      // required: true,
       enum:["Home Maker","Retired","Student","Unemployed","Other"] 
       },
     startDate:{
       type:Date,
-      required:true
+      // required:true
     } ,
     StillNonEmployee:{
       type:Boolean,
     },
     endDate:{
       type:Date,
-      required:function() {
-          return !this.StillNonEmployee
-      }
+      // required:function() {
+      //     return !this.StillNonEmployee
+      // }
     },
     incomeSource: {
       type: String,
@@ -114,7 +126,7 @@ const employmentSchema = new mongoose.Schema({
         "Rental", "Social Security", "Pension", "Alimony or Child Support", 
         "Annuity", "Unemployment Benefit", "Interest or Dividend", "Other"
       ],
-      required: true
+      // required: true
     },
   
     // For Rental Income
@@ -124,7 +136,7 @@ const employmentSchema = new mongoose.Schema({
         "Single Family", "Condominium", "TownHouse", "Two to Four Unit Property",
         "Cooperative", "Manufactured Home"
       ],
-      required: function() { return this.incomeSource === 'Rental'; }
+      // required: function() { return this.incomeSource === 'Rental'; }
     },
     rentalPropertyAddress: {
       type:Object,
@@ -136,76 +148,76 @@ const employmentSchema = new mongoose.Schema({
         state: { type: String, required: true },
         zipCode: { type: String, required: true },
       },   
-        required: function() { return this.incomeSource === 'Rental'; }
+        // required: function() { return this.incomeSource === 'Rental'; }
     },
     rentalPropertyValue: {
       type: Number,
-      required: function() { return this.incomeSource === 'Rental'; }
+      // required: function() { return this.incomeSource === 'Rental'; }
     },
     rentalMonthlyRent: {
       type: Number,
-      required: function() { return this.incomeSource === 'Rental'; }
+      // required: function() { return this.incomeSource === 'Rental'; }
     },
     rentalNumberOfMortgages: {
       type: Number,
-      required: function() { return this.incomeSource === 'Rental'; }
+      // required: function() { return this.incomeSource === 'Rental'; }
     },
     rentalPrincipalAndInterest: {
       type: Number,
-      required: function() { return this.incomeSource === 'Rental'; }
+      // required: function() { return this.incomeSource === 'Rental'; }
     },
     rentalWillMortgageBePaidOffBeforeClosing: {
       type: Boolean,
-      required: function() { return this.incomeSource === 'Rental'; }
+      // required: function() { return this.incomeSource === 'Rental'; }
     },
   
     // Social Security Income
     socialSecurityMonthlyIncome: {
       type: Number,
-      required: function() { return this.incomeSource === 'Social Security'; }
+      // required: function() { return this.incomeSource === 'Social Security'; }
     },
   
     // Pension Income
     pensionEmployerName: {
       type: String,
-      required: function() { return this.incomeSource === 'Pension'; }
+      // required: function() { return this.incomeSource === 'Pension'; }
     },
     pensionMonthlyIncome: {
       type: Number,
-      required: function() { return this.incomeSource === 'Pension'; }
+      // required: function() { return this.incomeSource === 'Pension'; }
     },
   
     // Alimony or Child Support
     supportIncomeType: {
       type: String,
       enum: ["Alimony", "Child Support"],
-      required: function() { return this.incomeSource === 'Alimony or Child Support'; }
+      // required: function() { return this.incomeSource === 'Alimony or Child Support'; }
     },
     supportMonthlyIncome: {
       type: Number,
-      required: function() { return this.incomeSource === 'Alimony or Child Support'; }
+      // required: function() { return this.incomeSource === 'Alimony or Child Support'; }
     },
   
     // Annuity Income
     annuityDescription: {
       type: String,
-      required: function() { return this.incomeSource === 'Annuity'; }
+      // required: function() { return this.incomeSource === 'Annuity'; }
     },
     annuityMonthlyIncome: {
       type: Number,
-      required: function() { return this.incomeSource === 'Annuity'; }
+      // required: function() { return this.incomeSource === 'Annuity'; }
     },
   
     // Unemployment Benefit
     unemploymentMonthlyIncome: {
       type: Number,
-      required: function() { return this.incomeSource === 'Unemployment Benefit'; }
+      // required: function() { return this.incomeSource === 'Unemployment Benefit'; }
     },
   
     // Interest or Dividend Income
     interestOrDividendAnnualIncome: {
       type: Number,
-      required: function() { return this.incomeSource === 'Interest or Dividend'; }
+      // required: function() { return this.incomeSource === 'Interest or Dividend'; }
     },
   
     // Other Income
@@ -218,11 +230,11 @@ const employmentSchema = new mongoose.Schema({
         "Notes Receivable", "Other", "Public Assistance", "Retirement (e.g., IRA)", 
         "Royalty Payment", "Separate Maintenance", "Trusts", "VA Compensation"
       ],
-      required: function() { return this.incomeSource === 'Other'; }
+      // required: function() { return this.incomeSource === 'Other'; }
     },
     otherMonthlyIncome: {
       type: Number,
-      required: function() { return this.incomeSource === 'Other'; }
+      // required: function() { return this.incomeSource === 'Other'; }
     }
   });
 
@@ -249,32 +261,40 @@ const demographicSchema = new mongoose.Schema({
           'Native Hawaiian or Other Pacific Islander', 'White', 
           'I do not wish to provide this information'
         ],
-        required: true
+        // required: true
       },
       raceOtherDescription: {
         type: String, 
-        required: function() { return this.race.includes('Other'); } 
+        // required: function() { return this.race.includes('Other'); } 
       },
       currentAddress: {
         type:Object,
         adress:{
-          addressLine1: { type: String, required: true },
+          addressLine1: { type: String,
+            //  required: true 
+            },
           addressLine2: { type: String },
-          city: { type: String, required: true },
+          city: { type: String, 
+            // required: true 
+          },
           county: { type: String },
-          state: { type: String, required: true },
-          zipCode: { type: String, required: true },
+          state: { type: String, 
+            // required: true
+           },
+          zipCode: { type: String, 
+            // required: true
+           },
         },   
-        required: true
+        // required: true
       },
       moveInDate: {
         type: Date,
-        required: true
+        // required: true
       },
       previousPropertyOwnership: {
         ownedInLastThreeYears: {
           type: Boolean,
-          required: true
+          // required: true
         },
         propertyUse: {
           type: String,
@@ -290,7 +310,7 @@ const demographicSchema = new mongoose.Schema({
       languagePreference: {
         type: String,
         enum: ['English', 'Chinese (中文)', 'Korean (한국어)', 'Spanish (Español)', 'Tagalog', 'Vietnamese (Tiếng Việt)', 'Other', 'I do not wish to provide this information'],
-        required: true
+        // required: true
       },
       numberOfDependents: {
         type: Number,
@@ -307,11 +327,11 @@ const declarationsSchema = new mongoose.Schema({
     propertyQuestions: {
         familyBusinessRelationshipWithSeller: {
           type: Boolean,
-          required: true
+          // required: true
         },
         familyBusinessExplanation: {
           type: String,
-          required: function() { return this.familyBusinessRelationshipWithSeller === true; }
+          // required: function() { return this.familyBusinessRelationshipWithSeller === true; }
         },
         applyingForOtherMortgage: {
           type: Boolean,
@@ -331,25 +351,25 @@ const declarationsSchema = new mongoose.Schema({
         },
          Priority: {
           type: Boolean,
-          required: true
+          // required: true
         },
         lienExplanation: {
           type: String,
-          required: function() { return this.lienPriority === true; }
+          // required: function() { return this.lienPriority === true; }
         },
         preForeclosureSale: {
           type: Boolean,
-          required: true
+          // required: true
         },
         preForeclosureExplanation: {
           type: String,
-          required: function() { return this.preForeclosureSale === true; }
+          // required: function() { return this.preForeclosureSale === true; }
         }
       },
       financialHistory: {
         coSignerOnOtherDebt: {
           type: Boolean,
-          required: true
+          // required: true
         },
         coSignerExplanation: {
           type: String,
@@ -357,43 +377,43 @@ const declarationsSchema = new mongoose.Schema({
         },
         outstandingJudgments: {
           type: Boolean,
-          required: true
+          // required: true
         },
         judgmentsExplanation: {
           type: String,
-          required: function() { return this.outstandingJudgments === true; }
+          // required: function() { return this.outstandingJudgments === true; }
         },
         delinquentFederalDebt: {
           type: Boolean,
-          required: true
+          // required: true
         },
         delinquentDebtExplanation: {
           type: String,
-          required: function() { return this.delinquentFederalDebt === true; }
+          // required: function() { return this.delinquentFederalDebt === true; }
         },
         lawsuitLiability: {
           type: Boolean,
-          required: true
+          // required: true
         },
         lawsuitExplanation: {
           type: String,
-          required: function() { return this.lawsuitLiability === true; }
+          // required: function() { return this.lawsuitLiability === true; }
         },
         titleConveyedInLieuOfForeclosure: {
           type: Boolean,
-          required: true
+          // required: true
         },
         titleConveyedExplanation: {
           type: String,
-          required: function() { return this.titleConveyedInLieuOfForeclosure === true; }
+          // required: function() { return this.titleConveyedInLieuOfForeclosure === true; }
         },
         propertyForeclosure: {
           type: Boolean,
-          required: true
+          // required: true
         },
         foreclosureExplanation: {
           type: String,
-          required: function() { return this.propertyForeclosure === true; }
+          // required: function() { return this.propertyForeclosure === true; }
         },
         borrowingMoneyForTransaction: {
           type: Boolean,
@@ -405,7 +425,7 @@ const declarationsSchema = new mongoose.Schema({
         },
         borrowingExplanation: {
           type: String,
-          required: function() { return this.borrowingMoneyForTransaction === true; }
+          // required: function() { return this.borrowingMoneyForTransaction === true; }
         },
         bankruptcyDeclared: {
           type: Boolean,
@@ -422,25 +442,25 @@ const declarationsSchema = new mongoose.Schema({
         },
         bankruptcyExplanation: {
           type: String,
-          required: function() { return this.bankruptcyDeclared === true; }
+          // required: function() { return this.bankruptcyDeclared === true; }
         },
         alimonyChildSupportExpenses: [{
             type: {
               type: String,
               enum: ["Alimony", "Child Support", "Job Related", "Separate Maintenance", "Other"],
-              required: true
+              // required: true
             },
             monthlyPaymentAmount: {
               type: Number,
-              required: true
+              // required: true
             },
             monthsLeft: {
               type: Number,
-              required: true
+              // required: true
             },
             otherExplanation: {
               type: String,
-              required: function() { return this.type === "Other"; }
+              // required: function() { return this.type === "Other"; }
             }
 
         }],
@@ -460,12 +480,12 @@ const RealEstateSchema = new mongoose.Schema({
           "Single Family", "Condominium", "Town House", "Two to Four Unit Property", 
           "Manufactured Home", "Cooperative", "Commercial"
         ],
-        required: true
+        // required: true
       },
       numberOfUnits: {
         type: Number,
         enum:[2,3,4],
-        required: function() { return this.propertyType === 'Two to Four Unit Property'; }
+        // required: function() { return this.propertyType === 'Two to Four Unit Property'; }
       },
       propertyAddress: {
         type:Object,
@@ -486,16 +506,16 @@ const RealEstateSchema = new mongoose.Schema({
       currentUse: {
         type: String,
         enum: ["Primary Residence", "Second/Vacation Residence", "Investment/Rental Property", "Property Pending Sale", "Property Sold"],
-        required: true
+        // required: true
       },
       useAfterTransaction: {
         type: String,
         enum: ["Retain as Primary Residence", "Retain as Second/Vacation Residence", "Retain as Investment/Rental Property", "Property Pending Sale", "Property Sold"],
-        required: true
+        // required: true
       },
       rentalIncome: {
         type: Boolean,
-        required: true
+        // required: true
       },
       monthlyRent: {
         type: Number,
@@ -503,11 +523,11 @@ const RealEstateSchema = new mongoose.Schema({
       },
       numberOfMortgages: {
         type: Number,
-        required: true
+        // required: true
       },
       mortgagePaidOffBeforeClosing: {
         type: Boolean,
-        required: true
+        // required: true
       },
     }]
   });
