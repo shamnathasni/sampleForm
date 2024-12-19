@@ -40,11 +40,10 @@ app.post("/receive", async (req, res) => {
     return res.status(400).json({ message: "Missing borrower or borrower profile data" });
   }
 
-  const { email, name, otherRequiredField } = borrowerData; // Adjust these based on your model's required fields
   const { employement, nonEmployement, demographic, declarations, realestate } = borrowerProfileData;
 
   // Check for missing fields in borrower data
-  if (!email || !name || !otherRequiredField) {
+  if (borrowerData) {
     return res.status(400).json({ message: "Missing required fields in borrower data" });
   }
 
@@ -69,7 +68,6 @@ app.post("/receive", async (req, res) => {
 
     // Save to the database
     const profile = await borrowerProfile.save();
-    console.log(profile);
 
     res.json({
       message: 'Borrower and assets data successfully saved to MongoDB',
