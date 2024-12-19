@@ -14,7 +14,7 @@ app.post("/submit", (req, res) => {
   const data = req.body;  // Get the data from the request body
 
   // Send the received data to another internal route (within the same server)
-  axios.post('http://localhost:3000/receive', data)
+  axios.post('https://sampleform-cnzr.onrender.com/receive', data)
     .then(response => {
       // Send back the response from the internal route
       res.json({
