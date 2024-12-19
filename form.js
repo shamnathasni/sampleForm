@@ -65,7 +65,6 @@ app.post("/receive", async (req, res) => {
     const borrowerProfile = new BorrowerProfile({
       borrowerId: borrower._id,
       employment: employement,
-      nonEmployment: nonEmployement,
       demographic: demographic,
       declarations: declarations,
       realestate: realestate,
