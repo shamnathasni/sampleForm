@@ -2,8 +2,6 @@ import mongoose from 'mongoose';
 
 
 // Employment Schema
-const mongoose = require('mongoose');
-
 const employmentSchema = new mongoose.Schema({
   isEmployed: { type: Boolean, required: true,default:true }, // True for employment, false for non-employment
 
