@@ -186,16 +186,16 @@ const borrowerSchema = new mongoose.Schema(
         propertyAddress: {
           type:Object,
           adress:{
-            addressLine1: { type: String, required: true },
+            addressLine1: { type: String, },
             addressLine2: { type: String },
-            city: { type: String, required: true },
+            city: { type: String, },
             county: { type: String },
-            state: { type: String, required: true },
-            zipCode: { type: String, required: true },
+            state: { type: String, },
+            zipCode: { type: String,},
           },   
-          required: function () {
-            return this.ApplicationType === "refinanceApplication";
-          },
+          // required: function () {
+          //   return this.ApplicationType === "refinanceApplication";
+          // },
         },
         /////optianal/////
         numberOfMortgages: {
