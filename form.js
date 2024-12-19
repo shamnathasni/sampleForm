@@ -1,8 +1,8 @@
 import express from 'express';
 import axios from 'axios';
-import mongoose from '../config/db_config.js'; 
-import  Borrower  from '../Models/borrowerModel.js'; 
-import BorrowerProfile from "../Models/borrowerProfileModel.js"
+import mongoose from './config/db_config.js'; 
+import  Borrower  from './Model/borrowerModel.js'; 
+import BorrowerProfile from "./Model/borrowerProfileModel.js"
 
 const app = express();
 
