@@ -12,7 +12,7 @@ const borrowerSchema = new mongoose.Schema(
       lastName: { type: String, required: true },
       suffix: { type: String },
       phoneNumber: { type: String, required: true },
-      email: { type: String, unique: true },
+      email: { type: String, required: true },
       maritalStatus: {
         type: String,
         enum: ['Married', 'Separated', 'Unmarried'],
@@ -71,7 +71,7 @@ const borrowerSchema = new mongoose.Schema(
       lastName: { type: String },
       suffix: { type: String },
       phoneNumber: { type: Number },
-      email: { type: String, unique: true },
+      email: { type: String, required: true },
       maritalStatus: {
         type: String,
         enum: ['Married', 'Separated', 'Unmarried'],
