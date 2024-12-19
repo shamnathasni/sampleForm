@@ -26,8 +26,11 @@ const employmentSchema = new mongoose.Schema({
     //  required: function() { return this.employmentType === 'Employment'; }
      },
     employerPhone: { type: String, 
-      // required: function() { return this.employmentType === 'Employment'; } },
-    startDate: { type: Date, required: function() { return this.employmentType === 'Employment' || this.employmentType === 'Independent Contractor'; } },
+      // required: function() { return this.employmentType === 'Employment'; } 
+      },
+    startDate: { type: Date,
+      //  required: function() { return this.employmentType === 'Employment' || this.employmentType === 'Independent Contractor'; }
+       },
     endDate: { type: Date },
     jobTitle: { type: String, required: function() { return this.employmentType === 'Employment' || this.employmentType === 'Independent Contractor'; } },
     yearsInProfession: { type: Number, required: function() { return this.employmentType === 'Employment' || this.employmentType === 'Independent Contractor'; } },
@@ -63,9 +66,7 @@ const employmentSchema = new mongoose.Schema({
         },   
       //  required: function() { return this.employmentType === 'Military Pay'; } 
       },
-    baseMonthlySalary: { type: Number, 
-      // required: function() { return this.employmentType === 'Military Pay'; }
-     },
+    baseMonthlySalary: { type: Number, required: function() { return this.employmentType === 'Military Pay'; } },
     baseAllowanceForSubsistence: { type: Number },
     specialPay: { type: Boolean },
     specialPayDetails: [{
@@ -83,9 +84,7 @@ const employmentSchema = new mongoose.Schema({
     businessType: { type: String, enum: ['Sole Proprietor', 'LLC', 'S-Corp', 'Partnership'],
       //  required: function() { return this.employmentType === 'Business/Self-Employment'; } 
       },
-    businessName: { type: String, 
-      // required: function() { return this.employmentType === 'Business/Self-Employment'; }
-     },
+    businessName: { type: String, required: function() { return this.employmentType === 'Business/Self-Employment'; } },
     businessAddress: {
       type:Object,
         adress:{
@@ -96,17 +95,11 @@ const employmentSchema = new mongoose.Schema({
           state: { type: String, required: true },
           zipCode: { type: String, required: true },
         },   
-      // required: function() { return this.employmentType === 'Business/Self-Employment'; } 
+      required: function() { return this.employmentType === 'Business/Self-Employment'; } 
     },
-    businessPhoneNumber: { type: String,
-      //  required: function() { return this.employmentType === 'Business/Self-Employment'; }
-       },
-    businessOwnership: { type: Number,
-      //  required: function() { return this.employmentType === 'Business/Self-Employment'; }
-       }, // Percentage ownership
-    businessGrossAnnualIncome: { type: Number, 
-      // required: function() { return this.employmentType === 'Business/Self-Employment'; } 
-    },
+    businessPhoneNumber: { type: String, required: function() { return this.employmentType === 'Business/Self-Employment'; } },
+    businessOwnership: { type: Number, required: function() { return this.employmentType === 'Business/Self-Employment'; } }, // Percentage ownership
+    businessGrossAnnualIncome: { type: Number, required: function() { return this.employmentType === 'Business/Self-Employment'; } },
   
     // Date when employment details were updated or created
     createdAt: { type: Date, default: Date.now },
@@ -154,11 +147,12 @@ const employmentSchema = new mongoose.Schema({
     rentalPropertyAddress: {
       type:Object,
       adress:{
-        addressLine1: { type: String},
-        addressLine2: { type:String },
+        addressLine1: { type: String, required: true },
+        addressLine2: { type: String },
+        city: { type: String, required: true },
         county: { type: String },
-        state: { type: String },
-        zipCode: { type: String, },
+        state: { type: String, required: true },
+        zipCode: { type: String, required: true },
       },   
         // required: function() { return this.incomeSource === 'Rental'; }
     },
