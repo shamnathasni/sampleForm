@@ -41,10 +41,10 @@ app.post("/receive", async (req, res) => {
   }
 
   const email = borrowerData.borrowerPersonalDetails.email;
-  if (!email || !validateEmail(email)) {
+  if (!email) {
     return res.status(400).json({ message: "Invalid or missing email address" });
   }
-  
+
   const { employement, nonEmployement, demographic, declarations, realestate } = borrowerProfileData;
 
   // Check for missing fields in borrower data
