@@ -3,7 +3,7 @@ import mongoose from 'mongoose';
 
 // Employment Schema
 const employmentSchema = new mongoose.Schema({
-  isEmployed: { type: Boolean, required: true,default:true }, // True for employment, false for non-employment
+  isEmployed: { type: Boolean, required: true, }, // True for employment, false for non-employment
 
   // Common Fields
   startDate: { type: Date, required: true },

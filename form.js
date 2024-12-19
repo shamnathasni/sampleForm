@@ -45,7 +45,7 @@ app.post("/receive", async (req, res) => {
     return res.status(400).json({ message: "Invalid or missing email address" });
   }
 
-  const { employement, nonEmployement, demographic, declarations, realestate } = borrowerProfileData;
+  const { employement, demographic, declarations, realestate } = borrowerProfileData;
 
   // Check for missing fields in borrower data
   if (!borrowerData.borrowerPersonalDetails || !borrowerData.borrowerPersonalDetails.firstName || !borrowerData.borrowerPersonalDetails.lastName) {
@@ -53,7 +53,7 @@ app.post("/receive", async (req, res) => {
   }
 
   // Check for missing fields in borrower profile data
-  if (!employement || !nonEmployement || !demographic || !declarations || !realestate) {
+  if (!employement || !demographic || !declarations || !realestate) {
     return res.status(400).json({ message: "Missing required fields in borrower profile data" });
   }
 
