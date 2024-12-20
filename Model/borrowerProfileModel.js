@@ -30,13 +30,13 @@ const employmentSchema = new mongoose.Schema({
   employerPhone: { type: String },
   jobTitle: { type: String },
   payType: { type: String, enum: ['Salaried', 'Hourly'] },
-  annualBaseSalary: { type: Number },
-  hourlyRate: { type: Number },
-  hoursPerWeek: { type: Number },
-  annualOvertime: { type: Number },
-  annualBonus: { type: Number },
-  annualCommission: { type: Number },
-  otherAnnualIncome: { type: Number },
+  annualBaseSalary: { type: String },
+  hourlyRate: { type: String },
+  hoursPerWeek: { type: String },
+  annualOvertime: { type: String },
+  annualBonus: { type: String },
+  annualCommission: { type: String },
+  otherAnnualIncome: { type: String },
 
   // Military Pay Fields
   rank: { type: String },
@@ -48,8 +48,8 @@ const employmentSchema = new mongoose.Schema({
     state: { type: String },
     zipCode: { type: String },
   },
-  baseMonthlySalary: { type: Number },
-  baseAllowanceForSubsistence: { type: Number },
+  baseMonthlySalary: { type: String },
+  baseAllowanceForSubsistence: { type: String },
   specialPay: { type: Boolean },
   specialPayDetails: [{
     type: String,
@@ -57,7 +57,7 @@ const employmentSchema = new mongoose.Schema({
   }],
 
   // Independent Contractor Fields
-  grossAnnualIncome: { type: Number },
+  grossAnnualIncome: { type: String },
 
   // Business / Self-Employment Fields
   businessType: { type: String, enum: ['Sole Proprietor', 'LLC', 'S-Corp', 'Partnership'] },
@@ -71,8 +71,8 @@ const employmentSchema = new mongoose.Schema({
     zipCode: { type: String },
   },
   businessPhoneNumber: { type: String },
-  businessOwnership: { type: Number }, // Percentage ownership
-  businessGrossAnnualIncome: { type: Number },
+  businessOwnership: { type: String }, // Percentage ownership
+  businessGrossAnnualIncome: { type: String },
 
   // Non-Employment Specific Fields
   incomeSource: {
@@ -94,24 +94,24 @@ const employmentSchema = new mongoose.Schema({
     state: { type: String },
     zipCode: { type: String },
   },
-  rentalPropertyValue: { type: Number },
-  rentalMonthlyRent: { type: Number },
-  rentalNumberOfMortgages: { type: Number },
-  rentalPrincipalAndInterest: { type: Number },
+  rentalPropertyValue: { type: String },
+  rentalMonthlyRent: { type: String },
+  rentalNumberOfMortgages: { type: String },
+  rentalPrincipalAndInterest: { type: String },
   rentalWillMortgageBePaidOffBeforeClosing: { type: Boolean },
 
-  socialSecurityMonthlyIncome: { type: Number },
+  socialSecurityMonthlyIncome: { type: String },
   pensionEmployerName: { type: String },
-  pensionMonthlyIncome: { type: Number },
+  pensionMonthlyIncome: { type: String },
   supportIncomeType: { 
     type: String, 
     enum: ["Alimony", "Child Support"] 
   },
-  supportMonthlyIncome: { type: Number },
+  supportMonthlyIncome: { type: String },
   annuityDescription: { type: String },
-  annuityMonthlyIncome: { type: Number },
-  unemploymentMonthlyIncome: { type: Number },
-  interestOrDividendAnnualIncome: { type: Number },
+  annuityMonthlyIncome: { type: String },
+  unemploymentMonthlyIncome: { type: String },
+  interestOrDividendAnnualIncome: { type: String },
   otherIncomeType: {
     type: String,
     enum: [
@@ -122,7 +122,7 @@ const employmentSchema = new mongoose.Schema({
       "Royalty Payment", "Separate Maintenance", "Trusts", "VA Compensation"
     ]
   },
-  otherMonthlyIncome: { type: Number },
+  otherMonthlyIncome: { type: String },
 
   // Timestamp
   createdAt: { type: Date, default: Date.now },
@@ -204,12 +204,12 @@ const demographicSchema = new mongoose.Schema({
         // required: true
       },
       numberOfDependents: {
-        type: Number,
-        enum: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+        type: String,
+        enum: ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10"],
         required: true
       },
       dependents: [
-        {age: { type: Number, required: function() { return this.numberOfDependents > 0; } }}
+        {age: { type: String, required: function() { return this.numberOfDependents > 0; } }}
       ]
 });
 
@@ -311,7 +311,7 @@ const declarationsSchema = new mongoose.Schema({
           required: true
         },
         moneyBorrowedAmount: {
-          type: Number,
+          type: String,
           required: function() { return this.borrowingMoneyForTransaction === true; }
         },
         borrowingExplanation: {
@@ -342,11 +342,11 @@ const declarationsSchema = new mongoose.Schema({
               // required: true
             },
             monthlyPaymentAmount: {
-              type: Number,
+              type: String,
               // required: true
             },
             monthsLeft: {
-              type: Number,
+              type: String,
               // required: true
             },
             otherExplanation: {
@@ -374,8 +374,8 @@ const RealEstateSchema = new mongoose.Schema({
         // required: true
       },
       numberOfUnits: {
-        type: Number,
-        enum:[2,3,4],
+        type: String,
+        enum:["2","3","4"],
         // required: function() { return this.propertyType === 'Two to Four Unit Property'; }
       },
       propertyAddress: {
@@ -391,7 +391,7 @@ const RealEstateSchema = new mongoose.Schema({
           required: true
       },
       propertyValue: {
-        type: Number,
+        type: String,
         required: true
       },
       currentUse: {
@@ -409,11 +409,11 @@ const RealEstateSchema = new mongoose.Schema({
         // required: true
       },
       monthlyRent: {
-        type: Number,
+        type: String,
         required: function() { return this.rentalIncome === true; }
       },
       numberOfMortgages: {
-        type: Number,
+        type: String,
         // required: true
       },
       mortgagePaidOffBeforeClosing: {

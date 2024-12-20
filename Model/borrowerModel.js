@@ -70,7 +70,7 @@ const borrowerSchema = new mongoose.Schema(
       middleName: { type: String },
       lastName: { type: String },
       suffix: { type: String },
-      phoneNumber: { type: Number },
+      phoneNumber: { type: String },
       email: { type: String, required: true },
       maritalStatus: {
         type: String,
@@ -122,7 +122,7 @@ const borrowerSchema = new mongoose.Schema(
           return this.coBorrower?.isMilitaryPersonnel;
         },
       },
-      yearsInProfession: { type: Number },
+      yearsInProfession: { type: String },
       liveWithPerson: { type: Boolean },
       currentAddress: {
         addressLine1: { type: String, required: true },
@@ -163,8 +163,8 @@ const borrowerSchema = new mongoose.Schema(
           },
         },
         numberOfUnits: {
-          type: Number,
-          enum: [2, 3, 4],
+          type: String,
+          enum: ["2", "3", "4"],
           required: function () {
             return this.propertyType === 'Two to Four unit Property' && this.ApplicationType === "refinanceApplication";      
           },
@@ -199,20 +199,20 @@ const borrowerSchema = new mongoose.Schema(
         },
         /////optianal/////
         numberOfMortgages: {
-          type: Number,
+          type: String,
           // required: function () {
           //   return this.ApplicationType === "refinanceApplication";
           // },
         },
         principalAndInterestMonthlyPayment: {
-          type: Number, // Optional field
+          type: String, // Optional field
         },
         willMortgageBePaidOff: {
           type: Boolean,
           default: false, // Optional, defaults to false
         },
         monthlyRent: {
-          type: Number,
+          type: String,
           required: function () {
             // Required only for 'Investment or Rental Property'
             return this.propertyUse === 'Investment or Rental Property' && this.ApplicationType === "refinanceApplication";
@@ -221,7 +221,7 @@ const borrowerSchema = new mongoose.Schema(
       },
       loanDetails: {
         loanAmount: {
-          type: Number,
+          type: String,
           required: function () {
             return this.ApplicationType === "refinanceApplication";
           },
@@ -240,7 +240,7 @@ const borrowerSchema = new mongoose.Schema(
       },
       personInfo: {
         socialSecurityNumber: {
-          type: Number,
+          type: String,
           // required: function () {
           //   return this.ApplicationType === "refinanceApplication";
           // },
@@ -263,8 +263,8 @@ const borrowerSchema = new mongoose.Schema(
           },
         },
         numberOfUnits: {
-          type: Number,
-          enum: [2, 3, 4],
+          type: String,
+          enum: ["2", "3", "4"],
           required: function () {
               return this.propertyType === 'Two to Four unit Property' && this.ApplicationType === "purchaseApplication";      
           },
@@ -287,7 +287,7 @@ const borrowerSchema = new mongoose.Schema(
           default:true
         },
         expectedMonthlyRentalIncome: {
-          type: Number,
+          type: String,
           // required: function () {
           //   return this.propertyUse === 'Investment or Rental Property' && this.MonthlyIncome ;
           // },
@@ -301,13 +301,13 @@ const borrowerSchema = new mongoose.Schema(
       },
       loanDetails: {
           purchasePrice: {
-            type: Number,
+            type: String,
             required: function () {
               return this.ApplicationType === "purchaseApplication";
             },
           },
           loanAmount: {
-            type: Number,
+            type: String,
             // required: function () {
             //   return this.ApplicationType === "purchaseApplication";
             // },
@@ -319,7 +319,7 @@ const borrowerSchema = new mongoose.Schema(
       },
       personInfo: {
         socialSecurityNumber: {
-          type: Number,
+          type: String,
           // required: function () {
           //   return this.ApplicationType === "purchaseApplication";
           // },
@@ -366,7 +366,7 @@ const borrowerSchema = new mongoose.Schema(
         },
       },
       cashOrMarketValue: {
-        type: Number,
+        type: String,
         required: function() {
           return !this.asset;// Cash or market value is required if asset (account) is linked (true)
         },
