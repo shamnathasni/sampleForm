@@ -347,15 +347,15 @@ const borrowerSchema = new mongoose.Schema(
       },
       userid: {
         type: String,
-        required: function() {
-            return this.asset; // Password is required if asset (account) is linked (true)
-          }, 
+        // required: function() {
+        //     return this.asset; // Password is required if asset (account) is linked (true)
+        //   }, 
       },
       password: {
         type: String,
-        required: function() {
-          return this.asset; // Password is required if asset (account) is linked (true)
-        },
+        // required: function() {
+        //   return this.asset; // Password is required if asset (account) is linked (true)
+        // },
       },
       accountType: {
         type: String,
