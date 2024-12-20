@@ -1,28 +1,33 @@
-import express from 'express';
-import axios from 'axios';
-import mongoose from './config/db_config.js'; 
-import Borrower from './Model/borrowerModel.js'; 
-import BorrowerProfile from './Model/borrowerProfileModel.js';
+import express from "express";
+import axios from "axios";
+import cronJob from "./cronjob.js";
+import mongoose from "./config/db_config.js";
+import Borrower from "./Model/borrowerModel.js";
+import BorrowerProfile from "./Model/borrowerProfileModel.js";
 
 const app = express();
 
 // Middleware to parse JSON data
 app.use(express.json());
 
+// Start the cron job
+cronJob.start();
+console.log("Cron job has started.");
+
 // First route: POST /submit (to receive data)
 app.post("/submit", (req, res) => {
-  const data = req.body;  // Get the data from the request body
+  const data = req.body; // Get the data from the request body
 
-  // Send the received data to another internal route (within the same server)
-  axios.post('https://sampleform-cnzr.onrender.com/receive', data)
-    .then(response => {
-      // Send back the response from the internal route
+  // Forward the received data to another internal route
+  axios
+    .post("https://sampleform-cnzr.onrender.com/receive", data)
+    .then((response) => {
       res.json({
         message: "Data forwarded to /receive route",
-        responseFromReceiveRoute: response.data
+        responseFromReceiveRoute: response.data,
       });
     })
-    .catch(error => {
+    .catch((error) => {
       console.error("Error sending data:", error);
       res.status(500).json({ message: "Error forwarding data to /receive route" });
     });
@@ -30,9 +35,9 @@ app.post("/submit", (req, res) => {
 
 // Second route: POST /receive (to receive data from the first route)
 app.post("/receive", async (req, res) => {
-  const data = req.body;  // Get the data from the request body
+  const data = req.body; // Get the data from the request body
 
-  // Validate required fields in borrower data and borrowerProfile data
+  // Validate borrower and borrower profile data
   const borrowerData = data.borrower;
   const borrowerProfileData = data.borrowerProfile;
 
@@ -40,52 +45,44 @@ app.post("/receive", async (req, res) => {
     return res.status(400).json({ message: "Missing borrower or borrower profile data" });
   }
 
-  const email = borrowerData.borrowerPersonalDetails.email;
-  if (!email) {
+  if (!borrowerData.borrowerPersonalDetails?.email) {
     return res.status(400).json({ message: "Invalid or missing email address" });
   }
 
-  const { employement, demographic, declarations, realestate } = borrowerProfileData;
-
-  // Check for missing fields in borrower data
-  if (!borrowerData.borrowerPersonalDetails || !borrowerData.borrowerPersonalDetails.firstName || !borrowerData.borrowerPersonalDetails.lastName) {
-    return res.status(400).json({ message: "Missing required fields in borrower data" });
-  }
-
-  // Check for missing fields in borrower profile data
-  if (!employement || !demographic || !declarations || !realestate) {
+  if (
+    !borrowerProfileData.employement ||
+    !borrowerProfileData.demographic ||
+    !borrowerProfileData.declarations ||
+    !borrowerProfileData.realestate
+  ) {
     return res.status(400).json({ message: "Missing required fields in borrower profile data" });
   }
 
   try {
-    // Create a new borrower document
     const borrower = new Borrower(borrowerData);
     await borrower.save();
 
     const borrowerProfile = new BorrowerProfile({
       borrowerId: borrower._id,
-      employment: employement,
-      demographic: demographic,
-      declarations: declarations,
-      realestate: realestate,
+      employment: borrowerProfileData.employement,
+      demographic: borrowerProfileData.demographic,
+      declarations: borrowerProfileData.declarations,
+      realestate: borrowerProfileData.realestate,
     });
 
-    // Save to the database
-    const profile = await borrowerProfile.save();
+    await borrowerProfile.save();
 
     res.json({
-      message: 'Borrower and assets data successfully saved to MongoDB',
-      borrowerId: borrower._id,  // Return the ID of the saved borrower
-      responseFromReceiveRoute: data  // Optionally send back the full data for debugging
+      message: "Borrower and assets data successfully saved to MongoDB",
+      borrowerId: borrower._id,
     });
-
   } catch (error) {
     console.error("Error saving borrower data:", error);
     res.status(500).json({ message: "Error saving borrower data to database" });
   }
 });
 
-// Starting the server
+// Start the server
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
