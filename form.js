@@ -31,7 +31,7 @@ app.post("/submit", (req, res) => {
     .catch((error) => {
       console.log(error.message)
       console.error("Error sending data:", error);
-      res.status(500).json({ message:data.alert});
+      res.status(500).json({ message: "Error forwarding data to /receive route" });
     });
 });
 
@@ -48,7 +48,7 @@ app.post("/receive", async (req, res) => {
   }
 
   if (!borrowerData.borrowerPersonalDetails?.email) {
-    return res.status(400).json({ alert: "Invalid or missing email address" });
+    return res.status(400).json({ message: "Invalid or missing email address" });
   }
 
   if (
