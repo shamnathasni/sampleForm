@@ -44,11 +44,11 @@ app.post("/receive", async (req, res) => {
   const borrowerProfileData = data.borrowerProfile;
 
   if (!borrowerData || !borrowerProfileData) {
-    return res.status(400).json({ message: "Missing borrower or borrower profile data" });
+    return res.status(400).json({ alert: "Missing borrower or borrower profile data" });
   }
 
   if (!borrowerData.borrowerPersonalDetails?.email) {
-    return res.status(400).json({ message: "Invalid or missing email address" });
+    return res.status(400).json({ alert: "Invalid or missing email address" });
   }
 
   if (
