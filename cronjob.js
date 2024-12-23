@@ -1,13 +1,9 @@
-import cron from "node-cron";
-import https from "https";
-
-const maxRetries = 3;
-
+const maxRetries = 6;
 const pingServer = (retries = 0) => {
   const options = {
     hostname: "swoz.onrender.com",
     method: "GET",
-    timeout: 60000, // Timeout set to 60 seconds
+    timeout: 120000, // Timeout set to 120 seconds
   };
 
   const req = https.request(options, (res) => {
@@ -20,7 +16,9 @@ const pingServer = (retries = 0) => {
 
     if (retries < maxRetries) {
       console.log(`Retrying... Attempt ${retries + 1}`);
-      pingServer(retries + 1);
+      setTimeout(() => pingServer(retries + 1), 1000 * (retries + 1)); // Exponential backoff
+    } else {
+      console.log("Max retries reached. No further attempts.");
     }
   });
 
@@ -29,16 +27,17 @@ const pingServer = (retries = 0) => {
 
     if (retries < maxRetries) {
       console.log(`Retrying... Attempt ${retries + 1}`);
-      pingServer(retries + 1);
+      setTimeout(() => pingServer(retries + 1), 1000 * (retries + 1)); // Exponential backoff
+    } else {
+      console.log("Max retries reached. No further attempts.");
     }
   });
 
   req.end();
 };
 
-const job = cron.schedule("*/14 * * * *", () => {
+// Pinging every 5 minutes to ensure the server stays alive
+setInterval(() => {
   console.log("Pinging server to keep it alive...");
   pingServer();
-});
-
-export default job;
+}, 5 * 60 * 1000); // Every 5 minutes
