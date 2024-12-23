@@ -150,7 +150,7 @@ const borrowerSchema = new mongoose.Schema(
     },
     ApplicationType: {
       type: String,
-      enum: ["refinance Application", "purchase Application"],
+      enum: ["Refinance Application", "Purchase Application"],
       required: true,
     },
     refinanceApplication: {
