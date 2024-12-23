@@ -20,32 +20,32 @@ const borrowerSchema = new mongoose.Schema(
       },
       hasPropertyRightsWithNonSpouse: {
         type: Boolean,
-        required: function () {
-          return this.borrowerPersonalDetails?.maritalStatus === 'Unmarried';
-        },
+        // required: function () {
+        //   return this.borrowerPersonalDetails?.maritalStatus === 'Unmarried';
+        // },
       },
       domesticRelationshipType: {
-        type: [String, null],
+        type: String,
         enum: [null, 'Civil union', 'Domestic Partnership', 'Registered Reciprocal Beneficiary Relationship', 'Other'],
-        required: function () {
-          return this.borrowerPersonalDetails?.maritalStatus === 'Unmarried';
-        },
+        // required: function () {
+        //   return this.borrowerPersonalDetails?.maritalStatus === 'Unmarried';
+        // },
       },
       otherRelationshipExplanation: {
         type: String,
-        required: function () {
-          return (
-            this.borrowerPersonalDetails?.maritalStatus === 'Unmarried' &&
-            this.borrowerPersonalDetails?.domesticRelationshipType === 'Other'
-          );
-        },
+        // required: function () {
+        //   return (
+        //     this.borrowerPersonalDetails?.maritalStatus === 'Unmarried' &&
+        //     this.borrowerPersonalDetails?.domesticRelationshipType === 'Other'
+        //   );
+        // },
       },
       relationshipState: {
         type: String,
         enum: ['Alabama', 'Alaska', 'Arizona', 'Arkansas', 'California', 'Colorado', 'Florida', 'Georgia', 'Texas'],
-        required: function () {
-          return this.borrowerPersonalDetails?.maritalStatus === 'Unmarried';
-        },
+        // required: function () {
+        //   return this.borrowerPersonalDetails?.maritalStatus === 'Unmarried';
+        // },
       },
       currentAddress: {
         addressLine1: { type: String, required: true },
@@ -71,22 +71,22 @@ const borrowerSchema = new mongoose.Schema(
       lastName: { type: String },
       suffix: { type: String },
       phoneNumber: { type: String },
-      email: { type: String, required: true },
+      email: { type: String,},
       maritalStatus: {
         type: String,
         enum: ['Married', 'Separated', 'Unmarried'],
       },
       isSpouse: {
         type: Boolean,
-        required: function () {
-          return this.coBorrower?.maritalStatus === 'Married';
-        },
+        // required: function () {
+        //   return this.coBorrower?.maritalStatus === 'Married';
+        // },
       },
       hasPropertyRightsWithNonSpouse: {
         type: Boolean,
-        required: function () {
-          return this.coBorrower?.maritalStatus === 'Unmarried';
-        },
+        // required: function () {
+        //   return this.coBorrower?.maritalStatus === 'Unmarried';
+        // },
       },
 /////////////
       isMilitaryPersonnel: {
@@ -102,35 +102,35 @@ const borrowerSchema = new mongoose.Schema(
           'Retired, Discharged, or Separated from Service',
           'Surviving Spouse',
         ],
-        required: function () {
-          return this.Borrower?.isMilitaryPersonnel;
-        },
+        // required: function () {
+        //   return this.Borrower?.isMilitaryPersonnel;
+        // },
       },
       militaryBranch: {
         type: String,
         enum: ['Air Force', 'Army', 'Coast Guard', 'Marines', 'National Guard', 'Navy', 'Space Force'],
-        required: function () {
-          return this.coBorrower?.isMilitaryPersonnel;
-        },
+        // required: function () {
+        //   return this.coBorrower?.isMilitaryPersonnel;
+        // },
       },
       rank: {
         type: String,
         enum: [
           'E-1', 'E-2', 'E-3', 'E-4', 'E-5', 'E-6', 'E-7', 'E-8', 'E-9','O-1', 'O-1E', 'O-2', 'O-2E', 'O-3', 'O-3E', 'O-4', 'O-5', 'O-6',
         ],
-        required: function () {
-          return this.coBorrower?.isMilitaryPersonnel;
-        },
+        // required: function () {
+        //   return this.coBorrower?.isMilitaryPersonnel;
+        // },
       },
       yearsInProfession: { type: String },
       liveWithPerson: { type: Boolean },
       currentAddress: {
-        addressLine1: { type: String, required: true },
+        addressLine1: { type: String, },
         addressLine2: { type: String },
-        city: { type: String, required: true },
+        city: { type: String,  },
         county: { type: String },
-        state: { type: String, required: true },
-        zipCode: { type: String, required: true },
+        state: { type: String },
+        zipCode: { type: String },
       },
       sameAsMailingAddress: { type: Boolean },
       mailingAddress: {
@@ -150,7 +150,7 @@ const borrowerSchema = new mongoose.Schema(
     },
     ApplicationType: {
       type: String,
-      enum: ["refinanceApplication", "purchaseApplication"],
+      enum: ["refinance Application", "purchase Application"],
       required: true,
     },
     refinanceApplication: {
@@ -158,16 +158,16 @@ const borrowerSchema = new mongoose.Schema(
         propertyType: {
           type: String,
           enum: ['Single family', 'Condominium', 'Town House', 'Two to Four unit Property', 'Cooperative', 'Manufactured home'],
-          required: function () {
-            return this.ApplicationType === "refinanceApplication";
-          },
+          // required: function () {
+          //   return this.ApplicationType === "refinanceApplication";
+          // },
         },
         numberOfUnits: {
           type: String,
           enum: ["2", "3", "4"],
-          required: function () {
-            return this.propertyType === 'Two to Four unit Property' && this.ApplicationType === "refinanceApplication";      
-          },
+          // required: function () {
+          //   return this.propertyType === 'Two to Four unit Property' && this.ApplicationType === "refinanceApplication";      
+          // },
         },
         ////////
         plannedUnitDevelopment: {
@@ -179,9 +179,9 @@ const borrowerSchema = new mongoose.Schema(
         propertyUse: {
           type: String,
           enum: ['Primary Residence', 'Second/Vacation Home', 'Investment or Rental Property', 'FHA Secondary Residence'],
-          required: function () {
-            return this.ApplicationType === "refinanceApplication";
-          },
+          // required: function () {
+          //   return this.ApplicationType === "refinanceApplication";
+          // },
         },
         propertyAddress: {
           type:Object,
@@ -213,25 +213,24 @@ const borrowerSchema = new mongoose.Schema(
         },
         monthlyRent: {
           type: String,
-          required: function () {
-            // Required only for 'Investment or Rental Property'
-            return this.propertyUse === 'Investment or Rental Property' && this.ApplicationType === "refinanceApplication";
-          },
+          // required: function () {
+          //   return this.propertyUse === 'Investment or Rental Property' && this.ApplicationType === "refinanceApplication";
+          // },
         }
       },
       loanDetails: {
         loanAmount: {
           type: String,
-          required: function () {
-            return this.ApplicationType === "refinanceApplication";
-          },
+          // required: function () {
+          //   return this.ApplicationType === "refinanceApplication";
+          // },
         },
         refinancePurpose: {
           type: String,
           enum: ['Lower rate or change terms', 'Cash-out for Home Improvement', 'Cash-out for Debt Consolidation', 'Other'],
-          required: function () {
-            return this.ApplicationType === "refinanceApplication";
-          },
+          // required: function () {
+          //   return this.ApplicationType === "refinanceApplication";
+          // },
         },
         applyingForOtherLoans: {
           type: Boolean,
@@ -247,9 +246,9 @@ const borrowerSchema = new mongoose.Schema(
         },
         dateOfBirth: {
           type: Date,
-          required: function () {
-            return this.ApplicationType === "refinanceApplication";
-          },
+          // required: function () {
+          //   return this.ApplicationType === "refinanceApplication";
+          // },
         },
       },
     },
@@ -258,16 +257,16 @@ const borrowerSchema = new mongoose.Schema(
         propertyType: {
           type: String,
           enum: ['Single family', 'Condominium', 'Town House', 'Two to Four unit Property', 'Cooperative', 'Manufactured home'],
-          required: function () {
-            return this.ApplicationType === "purchaseApplication";
-          },
+          // required: function () {
+          //   return this.ApplicationType === "purchaseApplication";
+          // },
         },
         numberOfUnits: {
           type: String,
           enum: ["2", "3", "4"],
-          required: function () {
-              return this.propertyType === 'Two to Four unit Property' && this.ApplicationType === "purchaseApplication";      
-          },
+          // required: function () {
+          //     return this.propertyType === 'Two to Four unit Property' && this.ApplicationType === "purchaseApplication";      
+          // },
         },
         plannedUnitDevelopment: {
           type: Boolean,
@@ -302,9 +301,9 @@ const borrowerSchema = new mongoose.Schema(
       loanDetails: {
           purchasePrice: {
             type: String,
-            required: function () {
-              return this.ApplicationType === "purchaseApplication";
-            },
+            // required: function () {
+            //   return this.ApplicationType === "purchaseApplication";
+            // },
           },
           loanAmount: {
             type: String,
@@ -326,9 +325,9 @@ const borrowerSchema = new mongoose.Schema(
         },
         dateOfBirth: {
           type: Date,
-          required: function () {
-            return this.ApplicationType === "purchaseApplication";
-          },
+          // required: function () {
+          //   return this.ApplicationType === "purchaseApplication";
+          // },
         },
       },
     },
@@ -361,15 +360,15 @@ const borrowerSchema = new mongoose.Schema(
         type: String,
         enum: ["Checking","Brokerage","Retirement","Savings","Trust","Certificate of Deposit","Money Market","Annuity","Mutual Fund","Stocks","Stock Options","Bonds","Bridge Loan Proceeds","Individual Development Account","Cash Value of Life Insurance","Other",
         ],
-        required: function() {
-          return !this.asset; // Account type is required if asset (account) is linked (true)
-        },
+        // required: function() {
+        //   return !this.asset; // Account type is required if asset (account) is linked (true)
+        // },
       },
       cashOrMarketValue: {
         type: String,
-        required: function() {
-          return !this.asset;// Cash or market value is required if asset (account) is linked (true)
-        },
+        // required: function() {
+        //   return !this.asset;// Cash or market value is required if asset (account) is linked (true)
+        // },
         min: 0, // Cash or market value must be a non-negative number
       },
     }],
