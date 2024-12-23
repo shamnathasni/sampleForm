@@ -31,7 +31,7 @@ app.post("/submit", (req, res) => {
     .catch((error) => {
       console.log(error.message)
       console.error("Error sending data:", error);
-      res.status(500).json({ message:data.alert, ":  Error forwarding data to /receive route" });
+      res.status(500).json({ message:data.alert});
     });
 });
 
