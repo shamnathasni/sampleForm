@@ -29,10 +29,15 @@ app.post("/submit", (req, res) => {
       });
     })
     .catch((error) => {
-      console.error("Error sending data:", error);
-      res.status(500).json({ message: "Error forwarding data to /receive route" });
+      console.error("Error sending data:", error.message); // Log the error message
+      console.error("Error stack:", error.stack); // Log the error stack for more details
+      res.status(500).json({
+        message: "Error forwarding data to /receive route",
+        error: error.message, // Include error message in the response
+      });
     });
 });
+
 
 // Second route: POST /receive (to receive data from the first route)
 app.post("/receive", async (req, res) => {
