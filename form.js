@@ -2,11 +2,12 @@ import express from "express";
 import axios from "axios";
 import cronJob from "./cronjob.js";
 import mongoose from "./config/db_config.js";
+import cors from 'cors';
 import Borrower from "./Model/borrowerModel.js";
 import BorrowerProfile from "./Model/borrowerProfileModel.js";
 
 const app = express();
-
+app.use(cors());
 // Middleware to parse JSON data
 app.use(express.json());
 
