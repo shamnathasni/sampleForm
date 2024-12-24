@@ -93,12 +93,12 @@ const borrowerSchema = new mongoose.Schema(
         // },
       },
       hasPropertyRightsWithNonSpouse: {
-        type: Boolean,
+        type: String,
         // required: function () {
         //   return this.coBorrower?.maritalStatus === 'Unmarried';
         // },
       },
-/////////////
+
       isMilitaryPersonnel: {
         type: Boolean,
         // required: true,
