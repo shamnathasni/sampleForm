@@ -27,7 +27,7 @@ const borrowerSchema = new mongoose.Schema(
         // required: true,
       },
       hasPropertyRightsWithNonSpouse: {
-        type: Boolean,
+        type: String,
         // required: function () {
         //   return this.borrowerPersonalDetails?.maritalStatus === 'Unmarried';
         // },
