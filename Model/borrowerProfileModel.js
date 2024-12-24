@@ -381,7 +381,7 @@ const RealEstateSchema = new mongoose.Schema({
       },
       numberOfUnits: {
         type: String,
-        enum:["2","3","4"],
+        // enum:["2","3","4"],
         // required: function() { return this.propertyType === 'Two to Four Unit Property'; }
       },
       propertyAddress: {
