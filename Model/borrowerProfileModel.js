@@ -6,8 +6,8 @@ const employmentSchema = new mongoose.Schema({
   isEmployed: { type: Boolean, required: true, default:true}, // True for employment, false for non-employment
 
   // Common Fields
-  startDate: { type: Date, required: true },
-  endDate: { type: Date },
+  startDate: { type: String, required: true },
+  endDate: { type: String },
   reasonForNonEmployment: { 
     type: String, 
     enum: ["Home Maker", "Retired", "Student", "Unemployed", "Other"] 
@@ -179,7 +179,7 @@ const demographicSchema = new mongoose.Schema({
         // required: true
       },
       moveInDate: {
-        type: Date,
+        type: String,
         // required: true
       },
       previousPropertyOwnership: {

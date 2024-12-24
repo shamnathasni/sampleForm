@@ -26,7 +26,7 @@ const borrowerSchema = new mongoose.Schema(
       },
       domesticRelationshipType: {
         type: String,
-        enum: [null, 'Civil union', 'Domestic Partnership', 'Registered Reciprocal Beneficiary Relationship', 'Other'],
+        enum: ["",'Civil union', 'Domestic Partnership', 'Registered Reciprocal Beneficiary Relationship', 'Other'],
         // required: function () {
         //   return this.borrowerPersonalDetails?.maritalStatus === 'Unmarried';
         // },
@@ -42,7 +42,7 @@ const borrowerSchema = new mongoose.Schema(
       },
       relationshipState: {
         type: String,
-        enum: ['Alabama', 'Alaska', 'Arizona', 'Arkansas', 'California', 'Colorado', 'Florida', 'Georgia', 'Texas'],
+        enum: ["",'Alabama', 'Alaska', 'Arizona', 'Arkansas', 'California', 'Colorado', 'Florida', 'Georgia', 'Texas'],
         // required: function () {
         //   return this.borrowerPersonalDetails?.maritalStatus === 'Unmarried';
         // },
@@ -227,7 +227,7 @@ const borrowerSchema = new mongoose.Schema(
         },
         refinancePurpose: {
           type: String,
-          enum: ['Lower rate or change terms', 'Cash-out for Home Improvement', 'Cash-out for Debt Consolidation', 'Other'],
+          enum: [null,'Lower rate or change terms', 'Cash-out for Home Improvement', 'Cash-out for Debt Consolidation', 'Other'],
           // required: function () {
           //   return this.ApplicationType === "refinanceApplication";
           // },
@@ -245,7 +245,7 @@ const borrowerSchema = new mongoose.Schema(
           // },
         },
         dateOfBirth: {
-          type: Date,
+          type: String,
           // required: function () {
           //   return this.ApplicationType === "refinanceApplication";
           // },
@@ -256,14 +256,14 @@ const borrowerSchema = new mongoose.Schema(
       property: {
         propertyType: {
           type: String,
-          enum: ['Single family', 'Condominium', 'Town House', 'Two to Four unit Property', 'Cooperative', 'Manufactured home'],
+          enum: [null,'Single family', 'Condominium', 'Town House', 'Two to Four unit Property', 'Cooperative', 'Manufactured home'],
           // required: function () {
           //   return this.ApplicationType === "purchaseApplication";
           // },
         },
         numberOfUnits: {
           type: String,
-          enum: ["2", "3", "4"],
+          enum: [null,"2", "3", "4"],
           // required: function () {
           //     return this.propertyType === 'Two to Four unit Property' && this.ApplicationType === "purchaseApplication";      
           // },
@@ -276,7 +276,7 @@ const borrowerSchema = new mongoose.Schema(
         },
         propertyUse: {
           type: String,
-          enum: ['Primary Residence', 'Second/Vacation Home', 'Investment or Rental Property', 'FHA Secondary Residence'],
+          enum: [null,'Primary Residence', 'Second/Vacation Home', 'Investment or Rental Property', 'FHA Secondary Residence'],
           // required: function () {
           //   return this.ApplicationType === "purchaseApplication";
           // },
@@ -324,7 +324,7 @@ const borrowerSchema = new mongoose.Schema(
           // },
         },
         dateOfBirth: {
-          type: Date,
+          type: String,
           // required: function () {
           //   return this.ApplicationType === "purchaseApplication";
           // },
@@ -338,7 +338,7 @@ const borrowerSchema = new mongoose.Schema(
       },
       institutionName: {
         type: String,
-        enum: ["Bank Of America","Chase","Citi","Wells Fargo","Capital One Bank","USAA","U.S.Bank","Navy Federal Credit Union",
+        enum: [null,"Bank Of America","Chase","Citi","Wells Fargo","Capital One Bank","USAA","U.S.Bank","Navy Federal Credit Union",
         ],
         // required: function() {
         //   return this.asset; // Institution name is required only if asset is true
@@ -358,7 +358,7 @@ const borrowerSchema = new mongoose.Schema(
       },
       accountType: {
         type: String,
-        enum: ["Checking","Brokerage","Retirement","Savings","Trust","Certificate of Deposit","Money Market","Annuity","Mutual Fund","Stocks","Stock Options","Bonds","Bridge Loan Proceeds","Individual Development Account","Cash Value of Life Insurance","Other",
+        enum: [null,"Checking","Brokerage","Retirement","Savings","Trust","Certificate of Deposit","Money Market","Annuity","Mutual Fund","Stocks","Stock Options","Bonds","Bridge Loan Proceeds","Individual Development Account","Cash Value of Life Insurance","Other",
         ],
         // required: function() {
         //   return !this.asset; // Account type is required if asset (account) is linked (true)
