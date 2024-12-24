@@ -7,16 +7,24 @@ const borrowerSchema = new mongoose.Schema(
       default: "created",
     },
     borrowerPersonalDetails: {
-      firstName: { type: String, required: true },
+      firstName: { type: String,
+        //  required: true
+         },
       middleName: { type: String },
-      lastName: { type: String, required: true },
+      lastName: { type: String, 
+        // required: true 
+      },
       suffix: { type: String },
-      phoneNumber: { type: String, required: true },
-      email: { type: String, required: true },
+      phoneNumber: { type: String,
+        //  required: true
+         },
+      email: { type: String,
+        //  required: true 
+        },
       maritalStatus: {
         type: String,
         enum: ['Married', 'Separated', 'Unmarried'],
-        required: true,
+        // required: true,
       },
       hasPropertyRightsWithNonSpouse: {
         type: Boolean,
@@ -48,12 +56,14 @@ const borrowerSchema = new mongoose.Schema(
         // },
       },
       currentAddress: {
-        addressLine1: { type: String, required: true },
+        addressLine1: { type: String,
+          //  required: true 
+          },
         addressLine2: { type: String },
-        city: { type: String, required: true },
+        city: { type: String,  },
         county: { type: String },
-        state: { type: String, required: true },
-        zipCode: { type: String, required: true },
+        state: { type: String,  },
+        zipCode: { type: String,  },
       },
       sameAsMailingAddress: { type: Boolean },
       mailingAddress: {
@@ -151,7 +161,7 @@ const borrowerSchema = new mongoose.Schema(
     ApplicationType: {
       type: String,
       enum: ["Refinance Application", "Purchase Application"],
-      required: true,
+      // required: true,
     },
     refinanceApplication: {
       property: {

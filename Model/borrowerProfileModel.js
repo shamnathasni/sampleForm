@@ -6,7 +6,9 @@ const employmentSchema = new mongoose.Schema({
   isEmployed: { type: Boolean, required: true, default:true}, // True for employment, false for non-employment
 
   // Common Fields
-  startDate: { type: String, required: true },
+  startDate: { type: String,
+    //  required: true
+     },
   endDate: { type: String },
   reasonForNonEmployment: { 
     type: String, 
@@ -134,7 +136,7 @@ const demographicSchema = new mongoose.Schema({
     sex: {
         type: String,
         enum: ['Female', 'Male', 'I do not wish to provide this information'],
-        required: true
+        // required: true
       },
       ethnicity: {
         type: String,
@@ -143,7 +145,7 @@ const demographicSchema = new mongoose.Schema({
           'Other Hispanic or Latino', 'Not Hispanic or Latino', 
           'I do not wish to provide this information'
         ],
-        required: true
+        // required: true
       },
       race: {
         type: [String],
@@ -190,12 +192,12 @@ const demographicSchema = new mongoose.Schema({
         propertyUse: {
           type: String,
           enum: ['Primary Residence', 'Second/Vacation Home', 'Investment/Rental Property', 'FHA Secondary Residence'],
-          required: true
+          // required: true
         },
         titleHeld: {
           type: String,
           enum: ['Solely', 'Jointly with spouse', 'Jointly with other'],
-          required: true
+          // required: true
         }
       },
       languagePreference: {
@@ -206,10 +208,12 @@ const demographicSchema = new mongoose.Schema({
       numberOfDependents: {
         type: String,
         enum: ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10"],
-        required: true
+        // required: true
       },
       dependents: [
-        {age: { type: String, required: function() { return this.numberOfDependents > 0; } }}
+        {age: { type: String, 
+          // required: function() { return this.numberOfDependents > 0; } 
+        }}
       ]
 });
 
@@ -226,19 +230,19 @@ const declarationsSchema = new mongoose.Schema({
         },
         applyingForOtherMortgage: {
           type: Boolean,
-          required: true
+          // required: true
         },
         mortgageExplanation: {
           type: String,
-          required: function() { return this.applyingForOtherMortgage === true; }
+          // required: function() { return this.applyingForOtherMortgage === true; }
         },
         applyingForNewCredit: {
           type: Boolean,
-          required: true
+          // required: true
         },
         newCreditExplanation: {
           type: String,
-          required: function() { return this.applyingForNewCredit === true; }
+          // required: function() { return this.applyingForNewCredit === true; }
         },
          Priority: {
           type: Boolean,
@@ -264,7 +268,7 @@ const declarationsSchema = new mongoose.Schema({
         },
         coSignerExplanation: {
           type: String,
-          required: function() { return this.coSignerOnOtherDebt === true; }
+          // required: function() { return this.coSignerOnOtherDebt === true; }
         },
         outstandingJudgments: {
           type: Boolean,
@@ -308,11 +312,11 @@ const declarationsSchema = new mongoose.Schema({
         },
         borrowingMoneyForTransaction: {
           type: Boolean,
-          required: true
+          // required: true
         },
         moneyBorrowedAmount: {
           type: String,
-          required: function() { return this.borrowingMoneyForTransaction === true; }
+          // required: function() { return this.borrowingMoneyForTransaction === true; }
         },
         borrowingExplanation: {
           type: String,
@@ -320,7 +324,7 @@ const declarationsSchema = new mongoose.Schema({
         },
         bankruptcyDeclared: {
           type: Boolean,
-          required: true
+          // required: true
         },
         bankruptcyType: {
           type: {
@@ -329,7 +333,7 @@ const declarationsSchema = new mongoose.Schema({
             chapter12: { type: Boolean, default: false },
             chapter13: { type: Boolean, default: false }
           },
-          required: function() { return this.bankruptcyDeclared === true; }
+          // required: function() { return this.bankruptcyDeclared === true; }
         },
         bankruptcyExplanation: {
           type: String,
@@ -358,7 +362,7 @@ const declarationsSchema = new mongoose.Schema({
         usCitizenshipStatus: {
           type: String,
           enum: ["U.S. Citizen", "Permanent Resident Alien", "Non-Permanent Resident Alien"],
-          required: true
+          // required: true
         }
       }
 });
@@ -381,27 +385,27 @@ const RealEstateSchema = new mongoose.Schema({
       propertyAddress: {
         type:Object,
         adress:{
-          addressLine1: { type: String, required: true },
+          addressLine1: { type: String,  },
           addressLine2: { type: String },
-          city: { type: String, required: true },
+          city: { type: String,  },
           county: { type: String },
-          state: { type: String, required: true },
-          zipCode: { type: String, required: true },
+          state: { type: String,  },
+          zipCode: { type: String,  },
         },        
-          required: true
+          // required: true
       },
       propertyValue: {
         type: String,
-        required: true
+        // required: true
       },
       currentUse: {
         type: String,
-        enum: ["Primary Residence", "Second/Vacation Residence", "Investment/Rental Property", "Property Pending Sale", "Property Sold"],
+        enum: ["","Primary Residence", "Second/Vacation Residence", "Investment/Rental Property", "Property Pending Sale", "Property Sold"],
         // required: true
       },
       useAfterTransaction: {
         type: String,
-        enum: ["Retain as Primary Residence", "Retain as Second/Vacation Residence", "Retain as Investment/Rental Property", "Property Pending Sale", "Property Sold"],
+        enum: [ "","Retain as Primary Residence", "Retain as Second/Vacation Residence", "Retain as Investment/Rental Property", "Property Pending Sale", "Property Sold"],
         // required: true
       },
       rentalIncome: {
@@ -410,7 +414,7 @@ const RealEstateSchema = new mongoose.Schema({
       },
       monthlyRent: {
         type: String,
-        required: function() { return this.rentalIncome === true; }
+        // required: function() { return this.rentalIncome === true; }
       },
       numberOfMortgages: {
         type: String,
