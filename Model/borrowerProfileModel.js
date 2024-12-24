@@ -12,13 +12,13 @@ const employmentSchema = new mongoose.Schema({
   endDate: { type: String },
   reasonForNonEmployment: { 
     type: String, 
-    enum: ["Home Maker", "Retired", "Student", "Unemployed", "Other"] 
+    // enum: ["Home Maker", "Retired", "Student", "Unemployed", "Other"] 
   },
 
   // Employment-Specific Fields
   employmentType: {
     type: String,
-    enum: ['Employment', 'Military Pay', 'Independent Contractor', 'Business/Self-Employment'],
+    // enum: ['Employment', 'Military Pay', 'Independent Contractor', 'Business/Self-Employment'],
   },
   employerName: { type: String },
   employerAddress: {
@@ -31,7 +31,9 @@ const employmentSchema = new mongoose.Schema({
   },
   employerPhone: { type: String },
   jobTitle: { type: String },
-  payType: { type: String, enum: ['Salaried', 'Hourly'] },
+  payType: { type: String, 
+    // enum: ['Salaried', 'Hourly']
+   },
   annualBaseSalary: { type: String },
   hourlyRate: { type: String },
   hoursPerWeek: { type: String },
@@ -55,14 +57,14 @@ const employmentSchema = new mongoose.Schema({
   specialPay: { type: Boolean },
   specialPayDetails: [{
     type: String,
-    enum: ['Flight Pay', 'Combat Pay', 'Hazard Pay', 'Overseas Pay', 'Prop Pay', 'Variable Housing Allowance', 'Clothes Allowance'],
+    // enum: ['Flight Pay', 'Combat Pay', 'Hazard Pay', 'Overseas Pay', 'Prop Pay', 'Variable Housing Allowance', 'Clothes Allowance'],
   }],
 
   // Independent Contractor Fields
   grossAnnualIncome: { type: String },
 
   // Business / Self-Employment Fields
-  businessType: { type: String, enum: ['Sole Proprietor', 'LLC', 'S-Corp', 'Partnership'] },
+  // businessType: { type: String, enum: ['Sole Proprietor', 'LLC', 'S-Corp', 'Partnership'] },
   businessName: { type: String },
   businessAddress: {
     addressLine1: { type: String },
@@ -79,14 +81,14 @@ const employmentSchema = new mongoose.Schema({
   // Non-Employment Specific Fields
   incomeSource: {
     type: String,
-    enum: [
-      "Rental", "Social Security", "Pension", "Alimony or Child Support", 
-      "Annuity", "Unemployment Benefit", "Interest or Dividend", "Other"
-    ]
+    // enum: [
+    //   "Rental", "Social Security", "Pension", "Alimony or Child Support", 
+    //   "Annuity", "Unemployment Benefit", "Interest or Dividend", "Other"
+    // ]
   },
   rentalPropertyType: { 
     type: String, 
-    enum: ["Single Family", "Condominium", "TownHouse", "Two to Four Unit Property", "Cooperative", "Manufactured Home"] 
+    // enum: ["Single Family", "Condominium", "TownHouse", "Two to Four Unit Property", "Cooperative", "Manufactured Home"] 
   },
   rentalPropertyAddress: {
     addressLine1: { type: String },
@@ -107,7 +109,7 @@ const employmentSchema = new mongoose.Schema({
   pensionMonthlyIncome: { type: String },
   supportIncomeType: { 
     type: String, 
-    enum: ["Alimony", "Child Support"] 
+    // enum: ["Alimony", "Child Support"] 
   },
   supportMonthlyIncome: { type: String },
   annuityDescription: { type: String },
@@ -116,13 +118,13 @@ const employmentSchema = new mongoose.Schema({
   interestOrDividendAnnualIncome: { type: String },
   otherIncomeType: {
     type: String,
-    enum: [
-      "Automobile Allowance", "Boarder Income", "Capital Gains", 
-      "Deferred Compensation", "Disability", "Foster Care", "Housing or Parsonage", 
-      "Mortgage Credit Certificate", "Mortgage Differential Payments", 
-      "Notes Receivable", "Other", "Public Assistance", "Retirement (e.g., IRA)", 
-      "Royalty Payment", "Separate Maintenance", "Trusts", "VA Compensation"
-    ]
+    // enum: [
+    //   "Automobile Allowance", "Boarder Income", "Capital Gains", 
+    //   "Deferred Compensation", "Disability", "Foster Care", "Housing or Parsonage", 
+    //   "Mortgage Credit Certificate", "Mortgage Differential Payments", 
+    //   "Notes Receivable", "Other", "Public Assistance", "Retirement (e.g., IRA)", 
+    //   "Royalty Payment", "Separate Maintenance", "Trusts", "VA Compensation"
+    // ]
   },
   otherMonthlyIncome: { type: String },
 
@@ -135,25 +137,25 @@ const employmentSchema = new mongoose.Schema({
 const demographicSchema = new mongoose.Schema({
     sex: {
         type: String,
-        enum: ['Female', 'Male', 'I do not wish to provide this information'],
+        // enum: ['Female', 'Male', 'I do not wish to provide this information'],
         // required: true
       },
       ethnicity: {
         type: String,
-        enum: [
-          'Hispanic or Latino', 'Mexican', 'Puerto Rican', 'Cuban', 
-          'Other Hispanic or Latino', 'Not Hispanic or Latino', 
-          'I do not wish to provide this information'
-        ],
+        // enum: [
+        //   'Hispanic or Latino', 'Mexican', 'Puerto Rican', 'Cuban', 
+        //   'Other Hispanic or Latino', 'Not Hispanic or Latino', 
+        //   'I do not wish to provide this information'
+        // ],
         // required: true
       },
       race: {
         type: [String],
-        enum: [
-          'American Indian or Alaska Native', 'Asian', 'Black or African American',
-          'Native Hawaiian or Other Pacific Islander', 'White', 
-          'I do not wish to provide this information'
-        ],
+        // enum: [
+        //   'American Indian or Alaska Native', 'Asian', 'Black or African American',
+        //   'Native Hawaiian or Other Pacific Islander', 'White', 
+        //   'I do not wish to provide this information'
+        // ],
         // required: true
       },
       raceOtherDescription: {
@@ -191,23 +193,23 @@ const demographicSchema = new mongoose.Schema({
         },
         propertyUse: {
           type: String,
-          enum: ['Primary Residence', 'Second/Vacation Home', 'Investment/Rental Property', 'FHA Secondary Residence'],
+          // enum: ['Primary Residence', 'Second/Vacation Home', 'Investment/Rental Property', 'FHA Secondary Residence'],
           // required: true
         },
         titleHeld: {
           type: String,
-          enum: ['Solely', 'Jointly with spouse', 'Jointly with other'],
+          // enum: ['Solely', 'Jointly with spouse', 'Jointly with other'],
           // required: true
         }
       },
       languagePreference: {
         type: String,
-        enum: ['English', 'Chinese (中文)', 'Korean (한국어)', 'Spanish (Español)', 'Tagalog', 'Vietnamese (Tiếng Việt)', 'Other', 'I do not wish to provide this information'],
+        // enum: ['English', 'Chinese (中文)', 'Korean (한국어)', 'Spanish (Español)', 'Tagalog', 'Vietnamese (Tiếng Việt)', 'Other', 'I do not wish to provide this information'],
         // required: true
       },
       numberOfDependents: {
         type: String,
-        enum: ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10"],
+        // enum: ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10"],
         // required: true
       },
       dependents: [
@@ -342,7 +344,7 @@ const declarationsSchema = new mongoose.Schema({
         alimonyChildSupportExpenses: [{
             type: {
               type: String,
-              enum: ["Alimony", "Child Support", "Job Related", "Separate Maintenance", "Other"],
+              // enum: ["Alimony", "Child Support", "Job Related", "Separate Maintenance", "Other"],
               // required: true
             },
             monthlyPaymentAmount: {
@@ -361,7 +363,7 @@ const declarationsSchema = new mongoose.Schema({
         }],
         usCitizenshipStatus: {
           type: String,
-          enum: ["U.S. Citizen", "Permanent Resident Alien", "Non-Permanent Resident Alien"],
+          // enum: ["U.S. Citizen", "Permanent Resident Alien", "Non-Permanent Resident Alien"],
           // required: true
         }
       }
@@ -371,10 +373,10 @@ const RealEstateSchema = new mongoose.Schema({
     properties: [{
       propertyType: {
         type: String,
-        enum: [
-          "Single Family", "Condominium", "Town House", "Two to Four Unit Property", 
-          "Manufactured Home", "Cooperative", "Commercial"
-        ],
+        // enum: [
+        //   "Single Family", "Condominium", "Town House", "Two to Four Unit Property", 
+        //   "Manufactured Home", "Cooperative", "Commercial"
+        // ],
         // required: true
       },
       numberOfUnits: {
@@ -400,12 +402,12 @@ const RealEstateSchema = new mongoose.Schema({
       },
       currentUse: {
         type: String,
-        enum: ["","Primary Residence", "Second/Vacation Residence", "Investment/Rental Property", "Property Pending Sale", "Property Sold"],
+        // enum: ["","Primary Residence", "Second/Vacation Residence", "Investment/Rental Property", "Property Pending Sale", "Property Sold"],
         // required: true
       },
       useAfterTransaction: {
         type: String,
-        enum: [ "","Retain as Primary Residence", "Retain as Second/Vacation Residence", "Retain as Investment/Rental Property", "Property Pending Sale", "Property Sold"],
+        // enum: [ "","Retain as Primary Residence", "Retain as Second/Vacation Residence", "Retain as Investment/Rental Property", "Property Pending Sale", "Property Sold"],
         // required: true
       },
       rentalIncome: {
