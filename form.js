@@ -15,6 +15,10 @@ app.use(express.json());
 // cronJob.start();
 // console.log("Cron job has started.");
 
+app.get("/", (req, res) => {
+  res.send("Hello, the server is up and running!");
+});
+
 // First route: POST /submit (to receive data)
 app.post("/submit", (req, res) => {
   const data = req.body; // Get the data from the request body
