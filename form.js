@@ -1,6 +1,6 @@
 import express from "express";
 import axios from "axios";
-import cronJob from "./cronjob.js";
+// import cronJob from "./cronjob.js";
 import mongoose from "./config/db_config.js";
 import cors from 'cors';
 import Borrower from "./Model/borrowerModel.js";
@@ -12,8 +12,8 @@ app.use(cors());
 app.use(express.json());
 
 // Start the cron job
-cronJob.start();
-console.log("Cron job has started.");
+// cronJob.start();
+// console.log("Cron job has started.");
 
 // First route: POST /submit (to receive data)
 app.post("/submit", (req, res) => {
@@ -21,7 +21,7 @@ app.post("/submit", (req, res) => {
 
   // Forward the received data to another internal route
   axios
-    .post("https://sampleform-cnzr.onrender.com/receive", data)
+    .post("http://34.204.50.193/receive", data)
     .then((response) => {
       res.json({
         message: "Data forwarded to /receive route",
