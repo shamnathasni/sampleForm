@@ -25,7 +25,7 @@ app.post("/submit", (req, res) => {
 
   // Forward the received data to another internal route
   axios
-    .post("http://34.204.50.193/receive", data)
+    .post("http://localhost:3000/receive", data)
     .then((response) => {
       res.json({
         message: "Data forwarded to /receive route",
@@ -84,7 +84,7 @@ app.post("/receive", async (req, res) => {
     });
   } catch (error) {
     console.error("Error saving borrower data:", error);
-    res.status(500).json({ message: "Error saving borrower data to database" });
+    res.status(500).json({ message: "Error saving borrower data to database" , error:error.message});
   }
 });
 
