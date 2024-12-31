@@ -25,7 +25,7 @@ app.post("/submit", (req, res) => {
 
   // Forward the received data to another internal route
   axios
-    .post("https://encompass.loanofficercrm.ai/receive", data)
+    .post("http://localhost:3000/receive", data)
     .then((response) => {
       res.json({
         message: "Data forwarded to /receive route",
