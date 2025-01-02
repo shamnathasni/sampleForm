@@ -395,100 +395,100 @@ export const getLoan =  async (req, res) => {
   };
 
 
-//     export const createSubscription = async (req, res) => {
-//       try {
-//         // Define the subscription payload
-//         const payload = {
-//           events: ["update"],
-//           // endpoint: "https://encompass.loanofficercrm.ai/",
-//           endpoint: "http://localhost:3000/submit",
-//           resource: "Loan",
-//           filters: {},
-//           enableSubscription: true
-//         };
+
+export const createSubscription = async (req, res) => {
+      try {
+        // Define the subscription payload
+       
     
-//         // Make the POST request
-//         const response = await axios.post('https://api.elliemae.com/webhook/v1/subscriptions', payload, {
-//           headers: {
-//             'Content-Type': 'application/json',
-//           }
-//         });
+        // Return the API response to the client
+console.log(response);
+
+
+        res.status(200).json({
+          message: 'Subscription created successfully!',
+          data: response.data
+        });
+
+      } catch (error) {
+        console.error('Error creating subscription:', error.message);
+        res.status(error.response?.status || 500).json({
+          message: 'Failed to create subscription',
+          error: error.response?.data || error.message
+        });
+      }
+    };   
+
+
+    export const updateLoanDetails = async (req, res) => {
+      try {
+        const payload = {
+          events: ["update"],
+          endpoint: "https://encompass.loanofficercrm.ai/updateLoan",
+          resource: "Loan",
+          filters: {},
+          enableSubscription: true
+        };
     
-//         // Return the API response to the client
-//         console.log(response);
-//         const id = response.data.id
-//         const findLoan = await Borrower.findOne({_id:id})
-//         if (!findLoan) {
-//           return res.status(404).json({
-//             message: 'Borrower not found in the database',
-//           });
-//         }
-        
-//         // Update loan status in the database
-//         const updateStatus = await Borrower.updateOne(
-//           { _id: findLoan._id },
-//           { $set: { loanStatus: 'Approved' } }
-//         );
-
-//         res.status(200).json({
-//           message: 'Subscription created successfully!',
-//           data: response.data
-//         });
-
-//       } catch (error) {
-//         console.error('Error creating subscription:', error.message);
-//         res.status(error.response?.status || 500).json({
-//           message: 'Failed to create subscription',
-//           error: error.response?.data || error.message
-//         });
-//       }
-//     };   
-
-
-//     export const updateLoanDetails = async (req, res) => {
-//       try {
-//         // Define the API endpoint
-//         const url = `https://api.elliemae.com/encompass/v3/loans/${process.env.loanGuid}?view=entity`;
-    
-//         // Define the payload
-//         const payload = {
-//           borrowerRequestedLoanAmount:9089
-//         };
-    
-//         // Send the PATCH request
-//         const response = await axios.patch(url, payload, {
-//           headers: {
-//             'Content-Type': 'application/json',
-//             Authorization: `Bearer ${process.env.AUTH_TOKEN}` // Replace with the actual Bearer token
-//           }
-//         });
-//          // Extract borrower details
-//     const borrowerFirstName = response.data.applications[0]?.borrower?.firstName;
-//     const borrowerLastName = response.data.applications[0]?.borrower?.lastName;
-
-//     console.log(`Borrower: ${borrowerFirstName} ${borrowerLastName}`);
-
-//     // Find the borrower record in the database
-//     const loan = await Borrower.findOne({
-//       'borrowerPersonalDetails.firstName': borrowerFirstName,
-//       'borrowerPersonalDetails.lastName': borrowerLastName,
-//     });
-
+        const subscriptionToken = await axios.post(
+          'https://api.elliemae.com/oauth2/v1/token',
+          new URLSearchParams({
+            grant_type: 'password',
+            username: 'chrisj@encompass:TEBE11371233',
+            password: 'loAIcrm1994!',
+            client_id: 'fw5t9js',
+            client_secret: '^TPShPA0#fi4jit7dJlEqBJl#IsK6bPCuRZONV7e1CJty0w10JnRabA@SaGUq5!q'
+          }),
+          {
+            headers: {
+              'Content-Type': 'application/x-www-form-urlencoded',
+            }
+          }
+        );
   
+      if (!subscriptionToken.data.access_token) {
+        console.log("accessToken is missing");
+        return res.json({message:"accessToken is missing"})
+      } else {
+        // Make the POST request
+        const response = await axios.post('https://api.elliemae.com/webhook/v1/subscriptions', payload, {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${subscriptionToken.data.access_token}` // Replace with your actual token
+          }
+        });
+      console.log(response,333);
+      
+    // Find the borrower record in the database
+    const loan = await Borrower.findOne({encompassLoanId:response.data.id});
 
-//     console.log('Loan update status:', updateStatus);
+    if (!loan) {
+      return res.status(404).json({
+        message: 'not found',
+      });
+    }
 
-//     // Send the API response back to the client
-//     res.status(200).json({
-//       message: 'Loan details updated successfully!',
-//       data: response.data,
-//     });
-//   } catch (error) {
-//     console.error('Error updating loan details:', error.message);
-//     res.status(error.response?.status || 500).json({
-//       message: 'Failed to update loan details',
-//       error: error.response?.data || error.message,
-//     });
-//   }
-// };
+    // Update loan status in the database
+    const updateStatus = await Borrower.updateOne(
+      { encompassLoanId: response.data.id},
+      { $set: { loanStatus: 'Approved' } }
+    );
+
+    console.log('Loan update status:', updateStatus);
+
+    // Send the API response back to the client
+    res.status(200).json({
+      message: 'Loan details updated successfully!',
+      data: response.data,
+    });}
+  } catch (error) {
+    console.error('Error updating loan details:', error.message);
+    res.status(error.response?.status || 500).json({
+      message: 'Failed to update loan details',
+      error: error.response?.data || error.message,
+    });
+  }
+};
+
+
 

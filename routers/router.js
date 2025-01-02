@@ -10,6 +10,6 @@ router.post('/submit', submitLoan);
 router.post('/receive', receiveLoan);
 router.get('/loan/:loanId',getLoan)
 // router.get('/webhookSubscription',createSubscription)
-// router.get('/updateLoan',updateLoanDetails)
+router.get('/updateLoan',updateLoanDetails)
 
 export default router;  // Make sure to export the router
