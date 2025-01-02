@@ -2,6 +2,10 @@ import mongoose from 'mongoose';
 
 const borrowerSchema = new mongoose.Schema(
   {
+    encompassLoanId: {
+      type: String, // or the appropriate type
+      default: null,
+    },
     loanStatus: {
       type: String,
       default: "created",

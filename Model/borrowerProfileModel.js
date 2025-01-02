@@ -3,8 +3,8 @@ import mongoose from 'mongoose';
 
 // Employment Schema
 const employmentSchema = new mongoose.Schema({
+ 
   isEmployed: { type: Boolean, required: true, default:true}, // True for employment, false for non-employment
-
   // Common Fields
   startDate: { type: String,
     //  required: true
@@ -432,6 +432,10 @@ const RealEstateSchema = new mongoose.Schema({
 // Combined Schema
 const BorrowerProfileSchema = new mongoose.Schema({
  borrowerId: { type: mongoose.Types.ObjectId, required: true, ref: 'Borrower' },
+ encompassLoanId: {
+  type: String, // or the appropriate type
+  default: null,
+},
   employment: employmentSchema,
   demographic: demographicSchema,
   declarations: declarationsSchema,

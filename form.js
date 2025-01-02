@@ -5,91 +5,20 @@ import mongoose from "./config/db_config.js";
 import cors from 'cors';
 import Borrower from "./Model/borrowerModel.js";
 import BorrowerProfile from "./Model/borrowerProfileModel.js";
+import router from "./routers/router.js";
 
 const app = express();
 app.use(cors());
 // Middleware to parse JSON data
 app.use(express.json());
 
-// Start the cron job
-// cronJob.start();
-// console.log("Cron job has started.");
+ // Sample route to test connection
+app.use('/', router);
 
-app.get("/", (req, res) => {
-  res.send("Hello, the server is up and running!");
-});
-
-// First route: POST /submit (to receive data)
-app.post("/submit", (req, res) => {
-  const data = req.body; // Get the data from the request body
-
-  // Forward the received data to another internal route
-  axios
-    .post("https://encompass.loanofficercrm.ai/receive", data)
-    .then((response) => {
-      res.json({
-        message: "Data forwarded to /receive route",
-        responseFromReceiveRoute: response.data,
-      });
-    })
-    .catch((error) => {
-      console.log(error.message)
-      console.error("Error sending data:", error);
-      res.status(500).json({ message: "Error forwarding data to /receive route" , error:error.message });
-    });
-});
-
-// Second route: POST /receive (to receive data from the first route)
-app.post("/receive", async (req, res) => {
-  const data = req.body; // Get the data from the request body
-
-  // Validate borrower and borrower profile data
-  const borrowerData = data.borrower;
-  const borrowerProfileData = data.borrowerProfile;
-
-  if (!borrowerData || !borrowerProfileData) {
-    return res.status(400).json({ alert: "Missing borrower or borrower profile data" });
-  }
-
-  if (!borrowerData.borrowerPersonalDetails?.email) {
-    return res.status(400).json({ message: "Invalid or missing email address" });
-  }
-
-  if (
-    !borrowerProfileData.employement ||
-    !borrowerProfileData.demographic ||
-    !borrowerProfileData.declarations ||
-    !borrowerProfileData.realestate
-  ) {
-    return res.status(400).json({ message: "Missing required fields in borrower profile data" });
-  }
-
-  try {
-    const borrower = new Borrower(borrowerData);
-    await borrower.save();
-
-    const borrowerProfile = new BorrowerProfile({
-      borrowerId: borrower._id,
-      employment: borrowerProfileData.employement,
-      demographic: borrowerProfileData.demographic,
-      declarations: borrowerProfileData.declarations,
-      realestate: borrowerProfileData.realestate,
-    });
-
-    await borrowerProfile.save();
-
-    res.json({
-      message: "Borrower and assets data successfully saved to MongoDB",
-      borrowerId: borrower._id,
-    });
-  } catch (error) {
-    console.error("Error saving borrower data:", error);
-    res.status(500).json({ message: "Error saving borrower data to database" , error:error.message});
-  }
-});
 
 // Start the server
 const PORT = 3000;
 app.listen(PORT, () => {
+  // console.log(`Server is running on port http://localhost:${PORT}`);
   console.log(`Server is running on port ${PORT}`);
 });
