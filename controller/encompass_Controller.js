@@ -401,7 +401,7 @@ export const getLoan =  async (req, res) => {
       const { loanId } = req.body;
   
       // Check if loan is already subscribed to webhook
-      const loan = await Borrower.findOne({encompassLoanId: loanId });.
+      const loan = await Borrower.findOne({encompassLoanId: loanId });
       console.log(req.body,"req.body");
       console.log(loan,"loan");
       
