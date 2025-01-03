@@ -9,6 +9,6 @@ router.get('/', simple);
 router.post('/submit', submitLoan);
 router.post('/receive', receiveLoan);
 router.get('/loan/:loanId',getLoan)
-router.get('/updateLoan',updateLoanDetails)
+router.post('/updateLoan',updateLoanDetails)
 
 export default router;  // Make sure to export the router
