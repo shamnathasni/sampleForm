@@ -433,7 +433,7 @@ export const getLoan =  async (req, res) => {
         },
       });
   
-    console.log(response.data,"subscription");
+    console.log(response.data.resourceId,"subscription");
     
   
   // Main function to update loan and create subscription
