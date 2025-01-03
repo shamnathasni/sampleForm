@@ -433,22 +433,23 @@ export const getLoan =  async (req, res) => {
         },
       });
   
-    console.log(response,"subscription");
+    console.log(response.data,"subscription");
     
   
   // Main function to update loan and create subscription
  export const updateDB = async (req, res) => {
     try {
-      const { loanId } = req.body; // Get the loanId from the request body
+      console.log(req.body,"updasubc");
+      const { resourceId } = req.body; // Get the loanId from the request body
   
       // Fetch the loan details (check if it's already subscribed)
-      const loan = await Borrower.findOne({ encompassLoanId: loanId });
+      const loan = await Borrower.findOne({ encompassLoanId: resourceId });
   
       // If no subscription exists, create a new subscription
       if (!loan) {
        
         const updateLoanStatus = await Borrower.updateOne(
-          { encompassLoanId: loanId },
+          { encompassLoanId: resourceId },
           { $set: { loanStatus: 'Approved' } } // Update the loan status or any other details
         );
         
@@ -456,13 +457,13 @@ export const getLoan =  async (req, res) => {
   
         // Send a success response to the client
         res.status(200).json({
-          message: 'Loan updated and subscription created successfully!',
+          message: 'Loan status updated and subscription created successfully!',
           subscriptionResponse,
         });
       } else {
-        console.log('Loan already subscribed, skipping subscription creation');
+        console.log('Loan not foud for this id');
         res.status(200).json({
-          message: 'Loan is already subscribed.',
+          message: 'Loan not found',
         });
       }
     } catch (error) {
