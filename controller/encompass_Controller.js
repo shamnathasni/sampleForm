@@ -407,10 +407,14 @@ export const getLoan =  async (req, res) => {
       if (!loan) {
         // Define the subscription payload
         const payload = {
-          events: ["update"],
+          events: ["change"],
           endpoint: "https://encompass.loanofficercrm.ai/updateLoan",
           resource: "Loan",
-          filters: {},
+          filters: {
+            "attributes": [
+              "/applications/*/coborrower/maritalStatusType",
+              "/milestoneLogs/*/doneIndicator"
+            ]},
           enableSubscription: true
         };
   
