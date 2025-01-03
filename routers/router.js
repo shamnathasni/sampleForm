@@ -6,23 +6,11 @@ import { createSubscription, getLoan, receiveLoan, simple, submitLoan, updateDB,
 
 // Define POST route for '/get-token' that calls the controller function
 router.get('/', simple);
+router.get('/createSubscription', createSubscription);
 router.post('/submit', submitLoan);
 router.post('/receive', receiveLoan);
 router.get('/loan/:loanId',getLoan)
 router.post('/updateLoan',updateDB)
 
-router.patch('https://api.elliemae.com/encompass/v3/loans/07ebbfd5-e662-4df3-ae9e-a25b709b4a57?view=entity', async (req, res) => {
-    try {
-      // Call createSubscription function
-      const subscriptionResponse = await createSubscription();
-      console.log('Subscription created successfully:', subscriptionResponse);
-  
-      // Send a response
-      res.status(200).json({ message: 'Subscription created successfully', subscriptionResponse });
-    } catch (error) {
-      console.error('Error creating subscription:', error.message);
-      res.status(500).json({ message: 'Failed to create subscription', error: error.message });
-    }
-  });
 
 export default router;  // Make sure to export the router
