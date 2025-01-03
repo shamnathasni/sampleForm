@@ -9,6 +9,7 @@ import BorrowerProfile from "../Model/borrowerProfileModel.js";
 // Start the cron job
 // cronJob.start();
 // console.log("Cron job has started.");
+let Token;
 
 export const simple = async (req, res) => {
   res.send("Hello, the server is up and running!");
@@ -56,6 +57,7 @@ export const receiveLoan = async (req, res) => {
     !borrowerProfileData.demographic ||
     !borrowerProfileData.declarations ||
     !borrowerProfileData.realestate
+
   ) {
     return res.status(400).json({ message: "Missing required fields in borrower profile data" });
   }
@@ -91,7 +93,7 @@ export const receiveLoan = async (req, res) => {
         }
       );
   // console.log(tokenResponse.data);
-  
+      Token = tokenResponse.data.access_token
 
     //create encompassloan
 
@@ -396,68 +398,74 @@ export const getLoan =  async (req, res) => {
 
 
 
-  export const updateLoanDetails = async (req, res) => {
-    try {
-      const { loanId } = req.body;
-      console.log(req.body,"req.body");
-  
-      // Check if loan is already subscribed to webhook
-      const loan = await Borrower.findOne({encompassLoanId: loanId });
-      console.log(loan,"loan");
-    
-        // Define the subscription payload
-        const payload = {
-          events: ["change"],
-          endpoint: "https://encompass.loanofficercrm.ai/updateLoan",
-          resource: "Loan",
-          filters: {
-            "attributes": [
-              "/applications/*/coborrower/maritalStatusType",
-              "/milestoneLogs/*/doneIndicator"
-            ]},
-          enableSubscription: true
-        };
-  
-        // Create subscription
-        const response = await axios.post('https://api.elliemae.com/webhook/v1/subscriptions', payload, {
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${subscriptionToken.data.access_token}`
-          }
-        });
-  
-        // Log the response for debugging
-        console.log("Subscription Response: ", response.data);
-        return res.json({data:response.data})
-  
-        // Store subscription info (for tracking in the database)
-        // const subscriptionData = response.data;
-        // await Borrower.updateOne(
-        //   {encompassLoanId: loanId },
-        //   { $set: { subscriptionId: subscriptionData.id } }
-        // );
-  
-        // Optionally update loan status or any other details in the database
-        // const updateLoanStatus = await Borrower.updateOne(
-        //   { encompassLoanId: loanId },
-        //   { $set: { loanStatus: loanStatus } }
-        // );
-  
-        // console.log("Loan status updated: ", updateLoanStatus);
-     
-  
-      // Send the response to the client
-      res.status(200).json({
-        message: 'Loan updated and subscription created successfully!',
-        loanStatus: loanStatus,
-      });
-  
-    } catch (error) {
-      console.error('Error updating loan details:', error.message);
-      res.status(error.response?.status || 500).json({
-        message: 'Failed to update loan details',
-        error: error.response?.data || error.message,
-      });
-    }
+
+ const createSubscription = async (loanId, accessToken) => {
+  const payload = {
+    events: ["change"],
+    endpoint: "https://encompass.loanofficercrm.ai/updateLoan",
+    resource: "Loan",
+    filters: {
+      attributes: [
+        "/applications/*/coborrower/maritalStatusType",
+        "/milestoneLogs/*/doneIndicator"
+      ]
+    },
+    enableSubscription: true
   };
-  
+
+  try {
+    const response = await axios.post(
+      'https://api.elliemae.com/webhook/v1/subscriptions',
+      payload,
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${Token}`
+        }
+      }
+    );
+    return response.data; // Return the subscription data
+  } catch (error) {
+    console.error('Error creating subscription:', error.message);
+    throw new Error(error.response?.data || error.message);
+  }
+};
+export const updateLoanDetails = async (req, res) => {
+  try {
+    const { loanId } = req.body;
+    console.log(req.body, "req.body");
+
+    // Check if the loan exists in the database
+    const loan = await Borrower.findOne({ encompassLoanId: loanId });
+    console.log(loan, "loan");
+
+    if (!loan) {
+      return res.status(404).json({ message: "Loan not found" });
+    }
+
+    // Create subscription
+    const subscriptionData = await createSubscription(
+      loanId,
+      subscriptionToken.data.access_token
+    );
+
+    console.log("Subscription Response: ", subscriptionData);
+
+    // Optionally update loan status or any other details in the database
+    await Borrower.updateOne(
+      { encompassLoanId: loanId },
+      { $set: { subscriptionId: subscriptionData.id } }
+    );
+
+    res.status(200).json({
+      message: "Loan updated and subscription created successfully!",
+      subscriptionId: subscriptionData.id,
+    });
+  } catch (error) {
+    console.error("Error updating loan details:", error.message);
+    res.status(error.response?.status || 500).json({
+      message: "Failed to update loan details",
+      error: error.response?.data || error.message,
+    });
+  }
+};
