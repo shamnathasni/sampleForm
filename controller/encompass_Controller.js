@@ -387,34 +387,33 @@ export const getLoan =  async (req, res) => {
 
   
   // Helper Function: Create Subscription
-  export const createSubscription = async (req,res) => {
+  export const createSubscription = async (req, res) => {
     try {
       // Obtain OAuth token
       const tokenResponseData = await axios.post(
-        'https://api.elliemae.com/oauth2/v1/token',
+        "https://api.elliemae.com/oauth2/v1/token",
         new URLSearchParams({
-          grant_type: 'password',
-          username: 'chrisj@encompass:TEBE11371233',
-          password: 'loAIcrm1994!',
-          client_id: 'fw5t9js',
-          client_secret: '^TPShPA0#fi4jit7dJlEqBJl#IsK6bPCuRZONV7e1CJty0w10JnRabA@SaGUq5!q'
+          grant_type: "password",
+          username: "chrisj@encompass:TEBE11371233",
+          password: "loAIcrm1994!",
+          client_id: "fw5t9js",
+          client_secret: "^TPShPA0#fi4jit7dJlEqBJl#IsK6bPCuRZONV7e1CJty0w10JnRabA@SaGUq5!q",
         }),
         {
           headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-          }
+            "Content-Type": "application/x-www-form-urlencoded",
+          },
         }
       );
-  // console.log(tokenResponse.data);
   
-
-    //create encompassloan
-    const accessToken = tokenResponseData.data.access_token;
-
-    if (!accessToken) {
-      console.log("accessToken is missing");
-      return res.json({message:"accessToken is missing"})
-    } else {
+      console.log("Token Response Data:", tokenResponseData.data);
+  
+      const accessToken = tokenResponseData.data.access_token;
+  
+      if (!accessToken) {
+        console.log("accessToken is missing");
+        return res.json({ message: "accessToken is missing" });
+      }
   
       const payload = {
         events: ["update"],
@@ -423,7 +422,7 @@ export const getLoan =  async (req, res) => {
         enableSubscription: true,
       };
   
-      console.log("Payload:", payload);
+      console.log("Subscription Payload:", payload);
   
       // Create subscription
       const subscriptionResponse = await axios.post(
@@ -437,11 +436,22 @@ export const getLoan =  async (req, res) => {
         }
       );
   
-      console.log("Subscription created successfully:", subscriptionResponse.data);}
+      console.log("Subscription created successfully:", subscriptionResponse.data);
+  
+      res.status(200).json({
+        message: "Subscription created successfully!",
+        subscriptionResponse: subscriptionResponse.data,
+      });
     } catch (error) {
-      console.error("Error creating subscription:", error.response?.data || error.message);
+      console.error("Error creating subscription:", {
+        data: error.response?.data,
+        status: error.response?.status,
+        headers: error.response?.headers,
+        message: error.message,
+      });
+  
       res.status(500).json({
-        message: 'Failed to update loan details',
+        message: "Failed to create subscription",
         error: error.message,
       });
     }
@@ -451,6 +461,7 @@ export const getLoan =  async (req, res) => {
   export const updateDB = async (req, res) => {
     try {
       const { resourceId } = req.body; // Get loanId from the webhook payload
+  console.log(req.body,"req.body");
   
       // Check if the loan already exists in your database
       const loan = await Borrower.findOne({ encompassLoanId: resourceId });
