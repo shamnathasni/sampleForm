@@ -384,6 +384,52 @@ export const getLoan =  async (req, res) => {
     }
   };
 
+
+  
+  // Helper Function: Create Subscription
+  try {
+    // Obtain OAuth token
+    const tokenResponse = await axios.post(
+      "https://api.elliemae.com/oauth2/v1/token",
+      new URLSearchParams({
+        grant_type: "password",
+        username: "chrisj@encompass:TEBE11371233",
+        password: "loAIcrm1994!",
+        client_id: "fw5t9js",
+        client_secret: "^TPShPA0#fi4jit7dJlEqBJty0w10JnRabA@SaGUq5!q",
+      }),
+      {
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+      }
+    );
+
+    const payload = {
+      events: ["update"],
+      endpoint: "https://encompass.loanofficercrm.ai/updateLoan", // Replace with your webhook endpoint
+      resource: "Loan",
+      enableSubscription: true,
+    };
+
+    // Create subscription
+    const subscriptionResponse = await axios.post(
+      "https://api.elliemae.com/webhook/v1/subscriptions",
+      payload,
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${tokenResponse.data.access_token}`,
+        },
+      }
+    );
+
+    console.log("Subscription created successfully:", subscriptionResponse.data);
+
+  } catch (error) {
+    console.error("Error creating subscription:", error.message);
+  }
+
   export const updateDB = async (req, res) => {
     try {
       const { resourceId } = req.body; // Get loanId from the webhook payload
@@ -417,49 +463,6 @@ export const getLoan =  async (req, res) => {
   };
   
   
-  // Helper Function: Create Subscription
-    try {
-      // Obtain OAuth token
-      const tokenResponse = await axios.post(
-        "https://api.elliemae.com/oauth2/v1/token",
-        new URLSearchParams({
-          grant_type: "password",
-          username: "chrisj@encompass:TEBE11371233",
-          password: "loAIcrm1994!",
-          client_id: "fw5t9js",
-          client_secret: "^TPShPA0#fi4jit7dJlEqBJty0w10JnRabA@SaGUq5!q",
-        }),
-        {
-          headers: {
-            "Content-Type": "application/x-www-form-urlencoded",
-          },
-        }
-      );
-  
-      const payload = {
-        events: ["update"],
-        endpoint: "https://encompass.loanofficercrm.ai/updateLoan", // Replace with your webhook endpoint
-        resource: "Loan",
-        enableSubscription: true,
-      };
-  
-      // Create subscription
-      const subscriptionResponse = await axios.post(
-        "https://api.elliemae.com/webhook/v1/subscriptions",
-        payload,
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${tokenResponse.data.access_token}`,
-          },
-        }
-      );
-  
-      console.log("Subscription created successfully:", subscriptionResponse.data);
-  
-    } catch (error) {
-      console.error("Error creating subscription:", error.message);
-        }
 
   
   
