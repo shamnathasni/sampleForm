@@ -384,49 +384,41 @@ export const getLoan =  async (req, res) => {
     }
   };
 
-  
-
-  
   export const updateDB = async (req, res) => {
     try {
-      console.log(req.body, "Webhook triggered");
+      const { resourceId } = req.body; // Get loanId from the webhook payload
   
-      const { resourceId } = req.body; // Loan ID from the webhook payload
-  
-      // Check if the loan exists in the database
-      let loan = await Borrower.findOne({ encompassLoanId: resourceId });
+      // Check if the loan already exists in your database
+      const loan = await Borrower.findOne({ encompassLoanId: resourceId });
   
       if (!loan) {
-        console.log("Loan not found. Creating a new subscription...");
-        
-        // Call subscription creation logic
-        await createSubscription(resourceId);
-  
-        loan = await Borrower.findOne({ encompassLoanId: resourceId }); // Fetch updated details after subscription creation
+        console.log(`Loan ${resourceId} not found in DB`);
+        return res.status(404).json({ message: 'Loan not found in DB' });
       }
   
-      // Update the loan status in the database
-      const updateLoanStatus = await Borrower.updateOne(
+      // Update loan details in your DB (if needed)
+      await Borrower.updateOne(
         { encompassLoanId: resourceId },
-        { $set: { loanStatus: "Approved" } } // Example update
+        { $set: { loanStatus: 'Updated' } } // Update any loan-specific fields
       );
   
-      console.log("Loan status updated:", updateLoanStatus);
+      console.log('Loan updated successfully:', resourceId);
   
-      res.status(200).json({
-        message: "Loan status updated and subscription ensured successfully!",
-      });
+      // Send a response to the webhook trigger
+      res.status(200).json({ message: 'Loan updated successfully!' });
+  
     } catch (error) {
-      console.error("Error processing loan update:", error.message);
+      console.error('Error updating loan details:', error.message);
       res.status(500).json({
-        message: "Failed to process loan update",
+        message: 'Failed to update loan details',
         error: error.message,
       });
     }
   };
   
+  
   // Helper Function: Create Subscription
-  const createSubscription = async (resourceId) => {
+  const createSubscription = async () => {
     try {
       // Obtain OAuth token
       const tokenResponse = await axios.post(
