@@ -10,7 +10,11 @@ router.get('/loan/:loanId',getLoan)
 router.get('/createSubscription', createSubscription);
 router.post('/submit', submitLoan);
 router.post('/receive', receiveLoan);
-router.post('/updateLoan',updateDB)
+router.post('/updateLoan', (req, res) => {
+    console.log('Received payload:', req.body);
+    res.status(200).json({ message: 'Payload received' });
+  });
+  
 
 
 export default router;  // Make sure to export the router
