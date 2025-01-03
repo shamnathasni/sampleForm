@@ -418,7 +418,6 @@ export const getLoan =  async (req, res) => {
   
   
   // Helper Function: Create Subscription
-  const createSubscription = async () => {
     try {
       // Obtain OAuth token
       const tokenResponse = await axios.post(
@@ -462,6 +461,6 @@ export const getLoan =  async (req, res) => {
       console.error("Error creating subscription:", error.message);
       throw error; // Propagate the error
     }
-  };
+
   
   
