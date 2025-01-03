@@ -426,14 +426,23 @@ export const getLoan =  async (req, res) => {
       };
   
       // Make the POST request to create the subscription
-      const response = await axios.post('https://api.elliemae.com/webhook/v1/subscriptions', payload, {
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${tokenResponse.data.access_token}`, // Include the token here
-        },
+      try {
+        const response = await axios.post('https://api.elliemae.com/webhook/v1/subscriptions', payload, {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${tokenResponse.data.access_token}`, // Include the token here
+          },
+        });
+    
+      console.log(response.data,"subscription");
+      } catch (error) {
+        console.error('Error updating loan details:', error.message);
+      res.status(500).json({
+        message: 'Failed to subscibe',
+        error: error.message,
       });
-  
-    console.log(response.data,"subscription");
+      }
+     
     
   
   // Main function to update loan and create subscription
