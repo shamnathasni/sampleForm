@@ -387,7 +387,7 @@ export const getLoan =  async (req, res) => {
 
   
   // Helper Function: Create Subscription
-  export const createSubscription = async () => {
+  export const createSubscription = async (req,res) => {
     try {
       // Obtain OAuth token
       const tokenResponseData = await axios.post(
