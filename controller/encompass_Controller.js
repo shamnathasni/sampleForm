@@ -459,8 +459,7 @@ export const getLoan =  async (req, res) => {
   
     } catch (error) {
       console.error("Error creating subscription:", error.message);
-      throw error; // Propagate the error
-    }
+        }
 
   
   
