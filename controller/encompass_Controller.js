@@ -396,112 +396,114 @@ export const getLoan =  async (req, res) => {
 
 
 
-
- // Function to create a subscription
-//  export const createSubscription = async (token) => {
-//   const payload = {
-//     events: ["update"], // Trigger for updates
-//     endpoint: "https://encompass.loanofficercrm.ai/updateLoan", // Endpoint to handle webhook events
-//     resource: "Loan", // Resource to subscribe to
-//     filters: {}, // Add specific filters if needed
-//     enableSubscription: true, // Enable the subscription
-//   };
-
-//   try {
-//     const response = await axios.post(
-//       "https://api.elliemae.com/webhook/v1/subscriptions",
-//       payload,
-//       {
-//         headers: {
-//           "Content-Type": "application/json",
-//           Authorization: `Bearer ${token}`, // Pass the token
-//         },
-//       }
-//     );
-//     console.log("Subscription created successfully:", response.data);
-//     return response.data; // Return subscription data
-//   } catch (error) {
-//     console.error("Error creating subscription:", error.message);
-//     throw new Error(error.response?.data || error.message);
-//   }
-// };
-
-
-const eventEmitter = new EventEmitter();
-
-// Middleware to parse JSON
-
-// Function to create a subscription
-const createSubscription = async () => {
-  const payload = {
-    events: ["create", "update", "move", "milestone", "document"],
-    endpoint: "https://encompass.loanofficercrm.ai/updateLoan",
-    signingkey: "hd4VJkvm0sWCKSgwqV2d8NokYFCsFxXz!",
-    resource: "Loan",
-  };
-
-  try {
-    const response = await axios.post(
-      'https://api.elliemae.com/webhook/v1/subscriptions',
-      payload,
-      {
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json',
-        },
-      }
-    );
-    console.log('Subscription created successfully:', response.data);
-    return response.data;
-  } catch (error) {
-    console.error('Error creating subscription:', error.message);
-    throw new Error(error.response?.data || error.message);
-  }
-};
-
-// Event listener for the 'triggerSubscription' event
-eventEmitter.on('triggerSubscription', async () => {
-  console.log('Event triggered! Creating subscription...');
-  try {
-    const subscriptionData = await createSubscription();
-    console.log('Subscription Data:', subscriptionData);
-  } catch (error) {
-    console.error('Failed to create subscription:', error.message);
-  }
-});
-
-// Function to update loan details
-export const updateLoanDetails = async (req, res) => {
-  try {
-    // Get loanId from the request body
-    console.log(req, "req.body");
-    const {loanId} = req.body
-
-    // Check if the loan exists
-    const loan = await Borrower.findOne({ encompassLoanId: loanId });
-    console.log(loan, "loan");
-
-    if (!loan) {
-      return res.status(404).json({ message: "Loan not found" });
+  // Function to get the OAuth 2.0 access token
+  const getAccessToken = async () => {
+    try {
+      // Prepare the payload for the request
+      const response = await axios.post(
+        'https://api.elliemae.com/oauth2/v1/token',
+        new URLSearchParams({
+          grant_type: 'password',
+          username: 'chrisj@encompass:TEBE11371233',
+          password: 'loAIcrm1994!',
+          client_id: 'fw5t9js',
+          client_secret: '^TPShPA0#fi4jit7dJlEqBJl#IsK6bPCuRZONV7e1CJty0w10JnRabA@SaGUq5!q'
+        }),
+        {
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+          }
+        }
+      );
+      // Get the access token from the response
+      const accessToken = response.data.access_token;
+      console.log('Access Token:', accessToken);
+      
+      return accessToken; // Return the access token for further use
+    } catch (error) {
+      console.error('Error fetching access token:', error.response?.data || error.message);
+      throw new Error('Failed to obtain access token');
     }
-
-    // Update loan status in the database
-    const updatedLoan = await Borrower.updateOne(
-      { encompassLoanId: loanId },
-      { $set: { loanStatus: "Approved" } } // Update with subscription ID
-    );
-    console.log("Loan updated successfully:", updatedLoan);
-
-    // Send success response
-    res.status(200).json({
-      message: "Loan updated and subscription created successfully!",
-      loanStatus: "Approved"
-    });
-  } catch (error) {
-    console.error("Error updating loan details:", error.message);
-    res.status(error.response?.status || 500).json({
-      message: "Failed to update loan details",
-      error: error.response?.data || error.message,
-    });
-  }
-};
+  };
+  
+  // Function to create a subscription
+  const createSubscription = async (accessToken) => {
+    try {
+      // Define the subscription payload
+      const payload = {
+        events: ["update"],
+        endpoint: "https://encompass.loanofficercrm.ai/updateLoan", // Replace with your webhook endpoint
+        resource: "Loan",
+        filters: {
+          // "attributes": [
+          //   "/applications/*/coborrower/maritalStatusType",
+          //   "/milestoneLogs/*/doneIndicator"
+          // ]
+        },
+        enableSubscription: true
+      };
+  
+      // Make the POST request to create the subscription
+      const response = await axios.post('https://api.elliemae.com/webhook/v1/subscriptions', payload, {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${accessToken}`, // Include the token here
+        },
+      });
+  
+      console.log('Subscription Response:', response.data);
+  
+      // Optionally, you can store the subscription ID and update your database
+      // const subscriptionId = response.data.id;
+      // await Borrower.updateOne({ encompassLoanId: loanId }, { $set: { subscriptionId } });
+  
+      return response.data; // Return subscription response if needed for further use
+    } catch (error) {
+      console.error('Error creating subscription:', error.response?.data || error.message);
+      throw new Error('Failed to create subscription');
+    }
+  };
+  
+  // Main function to update loan and create subscription
+ export const updateLoanDetails = async (req, res) => {
+    try {
+      const { loanId } = req.body; // Get the loanId from the request body
+  
+      // Fetch the loan details (check if it's already subscribed)
+      const loan = await Borrower.findOne({ encompassLoanId: loanId });
+  
+      // If no subscription exists, create a new subscription
+      if (!loan) {
+        const accessToken = await getAccessToken(); // Get access token
+  
+        // Create a subscription using the obtained access token
+        const subscriptionResponse = await createSubscription(accessToken, loanId);
+  
+        // Optionally, you can update the loan details in your database here
+        const updateLoanStatus = await Borrower.updateOne(
+          { encompassLoanId: loanId },
+          { $set: { loanStatus: 'Approved' } } // Update the loan status or any other details
+        );
+        
+        console.log('Loan status updated:', updateLoanStatus);
+  
+        // Send a success response to the client
+        res.status(200).json({
+          message: 'Loan updated and subscription created successfully!',
+          subscriptionResponse,
+        });
+      } else {
+        console.log('Loan already subscribed, skipping subscription creation');
+        res.status(200).json({
+          message: 'Loan is already subscribed.',
+        });
+      }
+    } catch (error) {
+      console.error('Error updating loan details:', error.message);
+      res.status(500).json({
+        message: 'Failed to update loan details',
+        error: error.message,
+      });
+    }
+  };
+  
