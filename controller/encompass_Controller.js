@@ -385,8 +385,7 @@ export const getLoan =  async (req, res) => {
   };
 
   
-  import axios from "axios";
-  import Borrower from "../models/Borrower.js";
+
   
   export const updateDB = async (req, res) => {
     try {
