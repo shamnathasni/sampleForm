@@ -102,8 +102,6 @@ export const receiveLoan = async (req, res) => {
       return res.json({message:"accessToken is missing"})
     } else {
       try{ 
-        const token = tokenResponse.data.access_token
-        console.log(token,token);
         
         const borrower = await Borrower.findOne({_id: borrowers._id})
         console.log(borrower,88);
