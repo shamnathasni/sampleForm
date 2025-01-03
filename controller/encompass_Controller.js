@@ -466,12 +466,6 @@ export const getLoan =  async (req, res) => {
   
       console.log("Subscription created successfully:", subscriptionResponse.data);
   
-      // Save subscription details in the database
-      await Borrower.updateOne(
-        { encompassLoanId: resourceId },
-        { $set: { subscriptionId: subscriptionResponse.data.id } },
-        { upsert: true }
-      );
     } catch (error) {
       console.error("Error creating subscription:", error.message);
       throw error; // Propagate the error
