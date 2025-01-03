@@ -401,7 +401,10 @@ export const getLoan =  async (req, res) => {
       const { loanId } = req.body;
   
       // Check if loan is already subscribed to webhook
-      const loan = await Borrower.findOne({encompassLoanId: loanId });
+      const loan = await Borrower.findOne({encompassLoanId: loanId });.
+      console.log(req.body,"req.body");
+      console.log(loan,"loan");
+      
   
       // If no subscription exists, create a new subscription
       if (!loan) {
@@ -448,34 +451,33 @@ export const getLoan =  async (req, res) => {
           }
         });
   
-        res.json({data: response.data})
-
-      //   // Log the response for debugging
-      //   console.log("Subscription Response: ", response.data);
+        // Log the response for debugging
+        console.log("Subscription Response: ", response.data);
+        return res.json({data:response.data})
   
-      //   // Store subscription info (for tracking in the database)
-      //   // const subscriptionData = response.data;
-      //   // await Borrower.updateOne(
-      //   //   {encompassLoanId: loanId },
-      //   //   { $set: { subscriptionId: subscriptionData.id } }
-      //   // );
+        // Store subscription info (for tracking in the database)
+        // const subscriptionData = response.data;
+        // await Borrower.updateOne(
+        //   {encompassLoanId: loanId },
+        //   { $set: { subscriptionId: subscriptionData.id } }
+        // );
   
-      //   // Optionally update loan status or any other details in the database
-      //   const updateLoanStatus = await Borrower.updateOne(
-      //     { encompassLoanId: loanId },
-      //     { $set: { loanStatus: loanStatus } }
-      //   );
+        // Optionally update loan status or any other details in the database
+        // const updateLoanStatus = await Borrower.updateOne(
+        //   { encompassLoanId: loanId },
+        //   { $set: { loanStatus: loanStatus } }
+        // );
   
-      //   console.log("Loan status updated: ", updateLoanStatus);
-      // } else {
-      //   console.log("Loan already subscribed, skipping subscription creation");
-      // }
+        // console.log("Loan status updated: ", updateLoanStatus);
+      } else {
+        console.log("Loan already subscribed, skipping subscription creation");
+      }
   
-      // // Send the response to the client
-      // res.status(200).json({
-      //   message: 'Loan updated and subscription created successfully!',
-      //   loanStatus: loanStatus,
-      // });
+      // Send the response to the client
+      res.status(200).json({
+        message: 'Loan updated and subscription created successfully!',
+        loanStatus: loanStatus,
+      });
   
     } catch (error) {
       console.error('Error updating loan details:', error.message);
