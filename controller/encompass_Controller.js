@@ -426,13 +426,14 @@ export const getLoan =  async (req, res) => {
       };
   
       // Make the POST request to create the subscription
-      await axios.post('https://api.elliemae.com/webhook/v1/subscriptions', payload, {
+      const response = await axios.post('https://api.elliemae.com/webhook/v1/subscriptions', payload, {
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${tokenResponse.data.access_token}`, // Include the token here
         },
       });
   
+    console.log(response,"subscription");
     
   
   // Main function to update loan and create subscription
