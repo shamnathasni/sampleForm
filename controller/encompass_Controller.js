@@ -93,8 +93,7 @@ export const receiveLoan = async (req, res) => {
         }
       );
   // console.log(tokenResponse.data);
-      token = tokenResponse.data.access_token
-      global.oauthToken = token;
+  
 
     //create encompassloan
 
@@ -478,6 +477,7 @@ export const updateLoanDetails = async (req, res) => {
   try {
     // Get loanId from the request body
     console.log(req, "req.body");
+    const {loanId} = req.body
 
     // Check if the loan exists
     const loan = await Borrower.findOne({ encompassLoanId: loanId });
