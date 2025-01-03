@@ -387,8 +387,7 @@ export const getLoan =  async (req, res) => {
 
   
   // Helper Function: Create Subscription
-  export const createSubscription = async () => {
-    try {
+
       // Obtain OAuth token
       const tokenResponse = await axios.post(
         "https://api.elliemae.com/oauth2/v1/token",
@@ -432,10 +431,7 @@ export const getLoan =  async (req, res) => {
       );
   
       console.log("Subscription created successfully:", subscriptionResponse.data);
-    } catch (error) {
-      console.error("Error creating subscription:", error.response?.data || error.message);
-    }
-  };
+  
   
 
   export const updateDB = async (req, res) => {
