@@ -448,32 +448,34 @@ export const getLoan =  async (req, res) => {
           }
         });
   
-        // Log the response for debugging
-        console.log("Subscription Response: ", response.data);
+        res.json({data: response.data})
+
+      //   // Log the response for debugging
+      //   console.log("Subscription Response: ", response.data);
   
-        // Store subscription info (for tracking in the database)
-        // const subscriptionData = response.data;
-        // await Borrower.updateOne(
-        //   {encompassLoanId: loanId },
-        //   { $set: { subscriptionId: subscriptionData.id } }
-        // );
+      //   // Store subscription info (for tracking in the database)
+      //   // const subscriptionData = response.data;
+      //   // await Borrower.updateOne(
+      //   //   {encompassLoanId: loanId },
+      //   //   { $set: { subscriptionId: subscriptionData.id } }
+      //   // );
   
-        // Optionally update loan status or any other details in the database
-        const updateLoanStatus = await Borrower.updateOne(
-          { encompassLoanId: loanId },
-          { $set: { loanStatus: loanStatus } }
-        );
+      //   // Optionally update loan status or any other details in the database
+      //   const updateLoanStatus = await Borrower.updateOne(
+      //     { encompassLoanId: loanId },
+      //     { $set: { loanStatus: loanStatus } }
+      //   );
   
-        console.log("Loan status updated: ", updateLoanStatus);
-      } else {
-        console.log("Loan already subscribed, skipping subscription creation");
-      }
+      //   console.log("Loan status updated: ", updateLoanStatus);
+      // } else {
+      //   console.log("Loan already subscribed, skipping subscription creation");
+      // }
   
-      // Send the response to the client
-      res.status(200).json({
-        message: 'Loan updated and subscription created successfully!',
-        loanStatus: loanStatus,
-      });
+      // // Send the response to the client
+      // res.status(200).json({
+      //   message: 'Loan updated and subscription created successfully!',
+      //   loanStatus: loanStatus,
+      // });
   
     } catch (error) {
       console.error('Error updating loan details:', error.message);
