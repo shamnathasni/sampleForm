@@ -1,7 +1,7 @@
 import express from 'express';
 const router = express.Router();
 
-import { createSubscription, getLoan, receiveLoan, simple, submitLoan, updateDB, } from '../controller/encompass_Controller.js'; // Correct import of the controller
+import { createSubscription, getLoan, receiveLoan, simple, submitLoan, } from '../controller/encompass_Controller.js'; // Correct import of the controller
 
 
 // Define POST route for '/get-token' that calls the controller function
