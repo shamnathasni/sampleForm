@@ -437,10 +437,6 @@ export const getLoan =  async (req, res) => {
       console.log(response.data,"subscription");
       } catch (error) {
         console.error('Error updating loan details:', error.message);
-      res.status(500).json({
-        message: 'Failed to subscibe',
-        error: error.message,
-      });
       }
      
     
