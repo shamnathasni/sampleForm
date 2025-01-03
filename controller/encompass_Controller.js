@@ -399,15 +399,12 @@ export const getLoan =  async (req, res) => {
   export const updateLoanDetails = async (req, res) => {
     try {
       const { loanId } = req.body;
+      console.log(req.body,"req.body");
   
       // Check if loan is already subscribed to webhook
       const loan = await Borrower.findOne({encompassLoanId: loanId });
-      console.log(req.body,"req.body");
       console.log(loan,"loan");
-      
-  
-      // If no subscription exists, create a new subscription
-      if (!loan) {
+    
         // Define the subscription payload
         const payload = {
           events: ["change"],
@@ -420,28 +417,6 @@ export const getLoan =  async (req, res) => {
             ]},
           enableSubscription: true
         };
-  
-        // Get OAuth token to authorize subscription
-        const subscriptionToken = await axios.post(
-          'https://api.elliemae.com/oauth2/v1/token',
-          new URLSearchParams({
-            grant_type: 'password',
-            username: 'chrisj@encompass:TEBE11371233',
-            password: 'loAIcrm1994!',
-            client_id: 'fw5t9js',
-            client_secret: '^TPShPA0#fi4jit7dJlEqBJl#IsK6bPCuRZONV7e1CJty0w10JnRabA@SaGUq5!q'
-          }),
-          {
-            headers: {
-              'Content-Type': 'application/x-www-form-urlencoded',
-            }
-          }
-        );
-  
-        if (!subscriptionToken.data.access_token) {
-          console.log("Access token is missing");
-          return res.status(400).json({ message: "Access token is missing" });
-        }
   
         // Create subscription
         const response = await axios.post('https://api.elliemae.com/webhook/v1/subscriptions', payload, {
@@ -469,9 +444,7 @@ export const getLoan =  async (req, res) => {
         // );
   
         // console.log("Loan status updated: ", updateLoanStatus);
-      } else {
-        console.log("Loan already subscribed, skipping subscription creation");
-      }
+     
   
       // Send the response to the client
       res.status(200).json({
