@@ -443,18 +443,10 @@ export const updateLoanDetails = async (req, res) => {
       return res.status(404).json({ message: "Loan not found" });
     }
 
-    // Create subscription
-    const subscriptionData = await createSubscription(
-      loanId,
-      subscriptionToken.data.access_token
-    );
-
-    console.log("Subscription Response: ", subscriptionData);
-
     // Optionally update loan status or any other details in the database
     await Borrower.updateOne(
       { encompassLoanId: loanId },
-      { $set: { subscriptionId: subscriptionData.id } }
+      { $set: { loanStatus: "Approved" } }
     );
 
     res.status(200).json({
