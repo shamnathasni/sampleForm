@@ -9,7 +9,6 @@ import BorrowerProfile from "../Model/borrowerProfileModel.js";
 // Start the cron job
 // cronJob.start();
 // console.log("Cron job has started.");
-let Token;
 
 export const simple = async (req, res) => {
   res.send("Hello, the server is up and running!");
@@ -93,7 +92,8 @@ export const receiveLoan = async (req, res) => {
         }
       );
   // console.log(tokenResponse.data);
-      Token = tokenResponse.data.access_token
+      token = tokenResponse.data.access_token
+      global.oauthToken = token;
 
     //create encompassloan
 
@@ -400,7 +400,7 @@ export const getLoan =  async (req, res) => {
 
 
  // Function to create a subscription
-const createSubscription = async (token) => {
+ export const createSubscription = async (token) => {
   const payload = {
     events: ["update"], // Trigger for updates
     endpoint: "https://encompass.loanofficercrm.ai/updateLoan", // Endpoint to handle webhook events
@@ -441,26 +441,6 @@ export const updateLoanDetails = async (req, res) => {
     if (!loan) {
       return res.status(404).json({ message: "Loan not found" });
     }
-
-    // Fetch token for subscription (replace with actual logic to get a valid token)
-    const subscriptionToken = await axios.post(
-      'https://api.elliemae.com/oauth2/v1/token',
-      new URLSearchParams({
-        grant_type: 'password',
-        username: 'chrisj@encompass:TEBE11371233',
-        password: 'loAIcrm1994!',
-        client_id: 'fw5t9js',
-        client_secret: '^TPShPA0#fi4jit7dJlEqBJl#IsK6bPCuRZONV7e1CJty0w10JnRabA@SaGUq5!q'
-      }),
-      {
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
-        }
-      }
-    );
-
-    // Create a subscription
-    const subscriptionData = await createSubscription(subscriptionToken.data.access_token);
 
     // Update loan status in the database
     const updatedLoan = await Borrower.updateOne(
