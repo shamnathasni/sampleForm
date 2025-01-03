@@ -431,8 +431,8 @@ export const getLoan =  async (req, res) => {
 // Function to update loan details
 export const updateLoanDetails = async (req, res) => {
   try {
-    const { loanId } = req.body; // Get loanId from the request body
-    console.log(req.body, "req.body");
+    // Get loanId from the request body
+    console.log(req, "req.body");
 
     // Check if the loan exists
     const loan = await Borrower.findOne({ encompassLoanId: loanId });
