@@ -417,8 +417,7 @@ export const getLoan =  async (req, res) => {
   
       const payload = {
         events: ["create","update"],
-        endpoint: "https://encompass.loanofficercrm.ai/updateLoan", // Replace with your webhook endpoint
-        // endpoint: 'https://webhook.site/08eaf732-315e-4a74-9d99-931fc4b040ea', // Replace with your webhook endpoint
+        endpoint: "https://encompass.loanofficercrm.ai/", 
         resource: "Loan",
         enableSubscription: true,
       };
@@ -459,40 +458,37 @@ export const getLoan =  async (req, res) => {
   };
   
 
-  // export const updateDB = async (req, res) => {
-  //   try {
-  //     console.log(req.body,"req.body");
-  //     const { resourceId } = req.body; // Get loanId from the webhook payload
+  export const updateDB = async (req, res) => {
+    try {
+      console.log(req.body, "req.body"); // Log the full request body to see its structure
   
-  //     // Check if the loan already exists in your database
-  //     const loan = await Borrower.findOne({ encompassLoanId: resourceId });
+      const { resourceId } = req.body.meta; // Get loanId from the webhook payload (assuming it's inside 'meta')
   
-  //     if (!loan) {
-  //       console.log(`Loan ${resourceId} not found in DB`);
-  //       return res.status(404).json({ message: 'Loan not found in DB' });
-  //     }
+      // Check if the loan already exists in your database
+      const loan = await Borrower.findOne({ encompassLoanId: resourceId });
   
-  //     // Update loan details in your DB (if needed)
-  //     await Borrower.updateOne(
-  //       { encompassLoanId: resourceId },
-  //       { $set: { loanStatus: 'Updated' } } // Update any loan-specific fields
-  //     );
+      if (!loan) {
+        console.log(`Loan ${resourceId} not found in DB`);
+        return res.status(404).json({ message: 'Loan not found in DB' });
+      }
   
-  //     console.log('Loan updated successfully:', resourceId);
+      // Update loan details in your DB (if needed)
+      await Borrower.updateOne(
+        { encompassLoanId: resourceId },
+        { $set: { loanStatus: 'Updated' } } // Update any loan-specific fields
+      );
   
-  //     // Send a response to the webhook trigger
-  //     res.status(200).json({ message: 'Loan updated successfully!' });
+      console.log('Loan updated successfully:', resourceId);
   
-  //   } catch (error) {
-  //     console.error('Error updating loan details:', error.message);
-  //     res.status(500).json({
-  //       message: 'Failed to update loan details',
-  //       error: error.message,
-  //     });
-  //   }
-  // };
+      // Send a response to the webhook trigger
+      res.status(200).json({ message: 'Loan updated successfully!' });
   
-  
-
-  
+    } catch (error) {
+      console.error('Error updating loan details:', error.message);
+      res.status(500).json({
+        message: 'Failed to update loan details',
+        error: error.message,
+      });
+    }
+  };
   
