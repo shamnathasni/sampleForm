@@ -488,15 +488,14 @@ export const updateLoanDetails = async (req, res) => {
     // Update loan status in the database
     const updatedLoan = await Borrower.updateOne(
       { encompassLoanId: loanId },
-      { $set: { loanStatus: "Approved", subscriptionId: subscriptionData.id } } // Update with subscription ID
+      { $set: { loanStatus: "Approved" } } // Update with subscription ID
     );
     console.log("Loan updated successfully:", updatedLoan);
 
     // Send success response
     res.status(200).json({
       message: "Loan updated and subscription created successfully!",
-      loanStatus: "Approved",
-      subscriptionId: subscriptionData.id,
+      loanStatus: "Approved"
     });
   } catch (error) {
     console.error("Error updating loan details:", error.message);
