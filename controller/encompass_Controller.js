@@ -416,7 +416,7 @@ export const getLoan =  async (req, res) => {
       }
   
       const payload = {
-        events: ["update"],
+        events: ["create","update"],
         endpoint: "https://encompass.loanofficercrm.ai/updateLoan", // Replace with your webhook endpoint
         resource: "Loan",
         enableSubscription: true,

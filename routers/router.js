@@ -6,10 +6,10 @@ import { createSubscription, getLoan, receiveLoan, simple, submitLoan, updateDB,
 
 // Define POST route for '/get-token' that calls the controller function
 router.get('/', simple);
+router.get('/loan/:loanId',getLoan)
 router.get('/createSubscription', createSubscription);
 router.post('/submit', submitLoan);
 router.post('/receive', receiveLoan);
-router.get('/loan/:loanId',getLoan)
 router.post('/updateLoan',updateDB)
 
 
