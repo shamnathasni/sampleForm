@@ -417,7 +417,7 @@ export const getLoan =  async (req, res) => {
   
       const payload = {
         events: ["create","update"],
-        endpoint: "https://encompass.loanofficercrm.ai/", 
+        endpoint: "https://encompass.loanofficercrm.ai/updateLoan", 
         resource: "Loan",
         enableSubscription: true,
       };
