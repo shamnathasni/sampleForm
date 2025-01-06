@@ -417,7 +417,7 @@ export const getLoan =  async (req, res) => {
   
       const payload = {
         events: ["create","update"],
-        endpoint: "https://webhook.site/08eaf732-315e-4a74-9d99-931fc4b040ea", 
+        endpoint: "https://webhook.site/b5570f67-1852-4902-91e1-eb1949c158ac", 
         resource: "Loan",
         enableSubscription: true,
       };
@@ -459,6 +459,8 @@ export const getLoan =  async (req, res) => {
   
 
   export const updateDB = async (req, res) => {
+    console.log("triggered");
+    
     try {
       console.log(req.body, "req.body"); // Log the full request body to see its structure
   
