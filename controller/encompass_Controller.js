@@ -459,38 +459,26 @@ export const getLoan =  async (req, res) => {
   
 
   export const updateDB = async (req, res) => {
-    console.log("triggered");
+    console.log("Webhook triggered");
+    res.status(200).json({ message: "Webhook received!" }); // Immediate response
     
     try {
-      console.log(req.body, "req.body"); // Log the full request body to see its structure
-  
-      const { resourceId } = req.body.meta; // Get loanId from the webhook payload (assuming it's inside 'meta')
-  
-      // Check if the loan already exists in your database
+      const { resourceId } = req.body.meta; 
       const loan = await Borrower.findOne({ encompassLoanId: resourceId });
-  
+      
       if (!loan) {
         console.log(`Loan ${resourceId} not found in DB`);
-        return res.status(404).json({ message: 'Loan not found in DB' });
+        return; // Log and exit without blocking webhook
       }
-  
-      // Update loan details in your DB (if needed)
+      
       await Borrower.updateOne(
         { encompassLoanId: resourceId },
-        { $set: { loanStatus: 'Updated' } } // Update any loan-specific fields
+        { $set: { loanStatus: 'Updated' } }
       );
-  
+      
       console.log('Loan updated successfully:', resourceId);
-  
-      // Send a response to the webhook trigger
-      res.status(200).json({ message: 'Loan updated successfully!' });
-  
     } catch (error) {
       console.error('Error updating loan details:', error.message);
-      res.status(500).json({
-        message: 'Failed to update loan details',
-        error: error.message,
-      });
     }
   };
   
