@@ -370,7 +370,7 @@ export const receiveLoan = async (req, res) => {
 export const getLoan = async (req, res) => {
   try {
     // Retrieve loanId from request (adjust based on how it's sent)
-    const loanId = req.query.loanId; // or req.body.loanId or req.params.loanId
+    const loanId = req.params.loanId; // or req.body.loanId or req.params.loanId
     
     if (!loanId) {
       return res.status(400).json({ message: "loanId is required" });
