@@ -119,7 +119,7 @@ export const receiveLoan = async (req, res) => {
         };
         
         const getDependentsAgesDescription = (dependents) => {
-          return dependents.map(dependent => dependent.age).join(',');
+          return dependents.map(dependent => Number(dependent.age) || 0 ).join(',');
         };
         
         const getEmployerCity = (borrowerProfile) => {
@@ -168,7 +168,7 @@ export const receiveLoan = async (req, res) => {
                     itemNumber: index + 1,
                     type: asset.accountType,
                     accountIdentifier: asset.userid,
-                    urla2020CashOrMarketValueAmount: asset.cashOrMarketValue,
+                    urla2020CashOrMarketValueAmount: parseFloat(asset.cashOrMarketValue) || 0,
                   })),
                 },
               ],
@@ -179,9 +179,9 @@ export const receiveLoan = async (req, res) => {
                 bankruptcyIndicatorChapterEleven: borrowerProfile.declarations.financialHistory.bankruptcyType.chapter11,
                 bankruptcyIndicatorChapterTwelve: borrowerProfile.declarations.financialHistory.bankruptcyType.chapter12,
                 bankruptcyIndicatorChapterThirteen: borrowerProfile.declarations.financialHistory.bankruptcyType.chapter13,
-                birthDate: borrower.refinanceApplication.dateOfBirth ||
-                  borrower.purchaseApplication.personInfo.dateOfBirth,
-                dependentCount: borrowerProfile.demographic.numberOfDependents,
+                birthDate: new Date(borrower.refinanceApplication.dateOfBirth) ||
+                    new Date(borrower.purchaseApplication.personInfo.dateOfBirth),
+                dependentCount: parseFloat(borrowerProfile.demographic.numberOfDependents) || 0,
                 dependentsAgesDescription: getDependentsAgesDescription(borrowerProfile.demographic.dependents),
                 domesticRelationshipType: borrower.borrowerPersonalDetails.domesticRelationshipType,
                 emailAddressText: borrower.borrowerPersonalDetails.email,
@@ -191,22 +191,22 @@ export const receiveLoan = async (req, res) => {
                     addressPostalCode: getEmployerPostalCode(borrowerProfile),
                     addressState: getEmployerState(borrowerProfile),
                     addressStreetLine1: getEmployerStreetLine1(borrowerProfile),
-                    basePayAmount: borrowerProfile.employment.annualBaseSalary,
-                    bonusAmount: borrowerProfile.employment.annualBonus || borrowerProfile.employment.specialPay,
-                    commissionsAmount: borrowerProfile.employment.annualCommission,
+                    basePayAmount: parseFloat(borrowerProfile.employment.annualBaseSalary) || 0,
+                    bonusAmount: parseFloat(borrowerProfile.employment.annualBonus) || parseFloat(borrowerProfile.employment.specialPay),
+                    commissionsAmount: parseFloat(borrowerProfile.employment.annualCommission) || 0 ,
                     employerName: borrowerProfile.employment.employerName || borrowerProfile.employment.businessName,
-                    employmentStartDate: borrowerProfile.employment.startDate,
+                    employmentStartDate: new Date(borrowerProfile.employment.startDate),
                     specialEmployerRelationshipIndicator: borrowerProfile.employment.isEmployerRelated,
                     ownershipInterestType: borrowerProfile.employment.businessOwnership,
                     employmentMonthlyIncomeAmount: calculateMonthlyIncome(
-                      borrowerProfile.employment.annualBaseSalary, 
-                      borrowerProfile.employment.hourlyRate, 
-                      borrowerProfile.employment.hoursPerWeek
+                      parseFloat(borrowerProfile.employment.annualBaseSalary)||0, 
+                      parseFloat(borrowerProfile.employment.hourlyRate)||0, 
+                      parseFloat(borrowerProfile.employment.hoursPerWeek)||0
                     ),
                     phoneNumber: borrowerProfile.employment.employerPhone || borrowerProfile.employment.businessPhoneNumber,
                     positionDescription: borrowerProfile.employment.jobTitle,
                     selfEmployedIndicator: borrowerProfile.employment.employmentType === "Business/Self-Employment",
-                    timeInLineOfWorkYears: borrowerProfile.employment.yearsInProfession,
+                    timeInLineOfWorkYears: parseFloat(borrowerProfile.employment.yearsInProfession),
                   },
                 ],
                 firstName: borrower.borrowerPersonalDetails.firstName,
@@ -241,7 +241,7 @@ export const receiveLoan = async (req, res) => {
                 sectionDExplanation: borrowerProfile.declarations.newCreditExplanation,
                 sectionFExplanation: borrowerProfile.declarations.borrowingExplanation,
                 suffixToName: borrower.borrowerPersonalDetails.suffix,
-                undisclosedBorrowedFundsAmount: borrowerProfile.declarations.financialHistory.moneyBorrowedAmount,
+                undisclosedBorrowedFundsAmount: parseFloat(borrowerProfile.declarations.financialHistory.moneyBorrowedAmount),
                 undisclosedBorrowedFundsIndicator: borrowerProfile.declarations.financialHistory.borrowingMoneyForTransaction,
                 undisclosedCreditApplicationIndicator: borrowerProfile.declarations.propertyQuestions.applyingForNewCredit,
                 undisclosedComakerOfNoteIndicator: borrowerProfile.declarations.financialHistory.coSignerOnOtherDebt,
@@ -249,7 +249,7 @@ export const receiveLoan = async (req, res) => {
                 textMessagePreferred: true,
               },
               coborrower: {
-                dependentCount: 0,
+                // dependentCount: 0,
                 emailAddressText: borrower.coBorrower.email,
                 firstName: borrower.coBorrower.firstName,
                 homePhoneNumber: borrower.coBorrower.phoneNumber,
@@ -301,10 +301,10 @@ export const receiveLoan = async (req, res) => {
             propertyExistingLienAmount: borrower.borrowerPersonalDetails.principalAndInterestMonthlyPayment,
             streetAddress: borrower.borrowerPersonalDetails.currentAddress.addressLine1,
           },
-          purchasePriceAmount: borrower.purchaseApplication.loanDetails.purchasePrice,
+          purchasePriceAmount: parseFloat(borrower.purchaseApplication.loanDetails.purchasePrice),
           ratelock: {
-            baseLoanAmount: borrower.refinanceApplication.loanDetails.loanAmount,
-            currentNumberOfDays: 10,
+            baseLoanAmount: parseFloat(borrower.refinanceApplication.loanDetails.loanAmount),
+            // currentNumberOfDays: 10,
             gsePropertyType: borrower.refinanceApplication.property.propertyType || borrower.purchaseApplication.property.propertyType,
           },
         };
