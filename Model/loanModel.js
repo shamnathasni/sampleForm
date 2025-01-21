@@ -1,6 +1,11 @@
 import mongoose from "mongoose";
 
 const loanSchema = new mongoose.Schema({
+   borrowerId: { type: mongoose.Types.ObjectId, required: true, ref: 'Borrower' },
+   encompassLoanId: {
+    type: String, // or the appropriate type
+    default: null,
+  },
     loanProgramName:{type:String},
     agencyCaseIdentifier:{type:String},
     lenderCaseIdentifier:{type:String},
@@ -663,3 +668,8 @@ const loanSchema = new mongoose.Schema({
       interviewerPhoneNumber:{type:Number},
       signatureDateFor1003:{type:Date},
 })
+
+
+const Loan = mongoose.model("LoanModel",loanSchema)
+
+export default Loan

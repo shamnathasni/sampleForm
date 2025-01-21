@@ -6,6 +6,7 @@ const router = express.Router();
 import EventEmitter from 'events';
 import Borrower from "../Model/borrowerModel.js";
 import BorrowerProfile from "../Model/borrowerProfileModel.js";
+import Loan from "../Model/loanModel.js";
 
 // Start the cron job
 // cronJob.start();
@@ -73,8 +74,10 @@ export const receiveLoan = async (req, res) => {
       declarations: borrowerProfileData.declarations,
       realestate: borrowerProfileData.realestate,
     });
-
     await borrowerProfiles.save();
+
+    const loanData = new Loan({borrowerId: borrowers._id})
+    await loanData.save();
 
     // Fetch the access token after successful save
       const tokenResponse = await axios.post(
@@ -332,6 +335,10 @@ export const receiveLoan = async (req, res) => {
                 { borrowerId: borrowers._id }, 
                 { $set: { encompassLoanId: encompassLoan.data.id } }
               );
+              const encompassIdLoan = await Loan.updateOne(
+                { borrowerId: borrowers._id }, 
+                { $set: { encompassLoanId: encompassLoan.data.id } }
+              );
               
           res.json({
           message: "Borrower and assets data successfully saved to MongoDB and Loan created successfully",
@@ -366,7 +373,6 @@ export const receiveLoan = async (req, res) => {
     res.status(500).json({ message: "Error saving borrower data to database" , error:error.message});
   }
 };
-
 
 export const getLoan = async (req, res) => {
   try {
@@ -453,11 +459,12 @@ export const getLoan = async (req, res) => {
       if (!accessToken) {
         console.log("accessToken is missing");
         return res.json({ message: "accessToken is missing" });
-      }
+      }  
   
       const payload = {
-        events: ["create","update"],
-        endpoint: "https://encompass.loanofficercrm.ai/updateLoan", 
+        events: ["update"],
+        // endpoint: "https://encompass.loanofficercrm.ai/updateLoan", 
+        endpoint: "https://webhook.site/fa53ba78-7ece-42e7-8f8d-61307e7036ce", 
         resource: "Loan",
         enableSubscription: true,
       };
@@ -501,39 +508,39 @@ export const getLoan = async (req, res) => {
   };
   
 
-  export const updateDB = async (req, res) => {
-    console.log("triggered");
+  // export const updateDB = async (req, res) => {
+  //   console.log("triggered");
     
-    try {
-      console.log(req.body, "req.body"); // Log the full request body to see its structure
+  //   try {
+  //     console.log(req.body, "req.body"); // Log the full request body to see its structure
   
-      const { resourceId } = req.body.meta; // Get loanId from the webhook payload (assuming it's inside 'meta')
+  //     const { resourceId } = req.body.meta; // Get loanId from the webhook payload (assuming it's inside 'meta')
   
-      // Check if the loan already exists in your database
-      const loan = await Borrower.findOne({ encompassLoanId: resourceId });
+  //     // Check if the loan already exists in your database
+  //     const loan = await Borrower.findOne({ encompassLoanId: resourceId });
   
-      if (!loan) {
-        console.log(`Loan ${resourceId} not found in DB`);
-        return res.status(404).json({ message: 'Loan not found in DB' });
-      }
+  //     if (!loan) {
+  //       console.log(`Loan ${resourceId} not found in DB`);
+  //       return res.status(404).json({ message: 'Loan not found in DB' });
+  //     }
   
-      // Update loan details in your DB (if needed)
-      await Borrower.updateOne(
-        { encompassLoanId: resourceId },
-        { $set: { loanStatus: 'Updated' } } // Update any loan-specific fields
-      );
+  //     // Update loan details in your DB (if needed)
+  //     await Borrower.updateOne(
+  //       { encompassLoanId: resourceId },
+  //       { $set: { loanStatus: 'Updated' } } // Update any loan-specific fields
+  //     );
   
-      console.log('Loan updated successfully:', resourceId);
+  //     console.log('Loan updated successfully:', resourceId);
   
-      // Send a response to the webhook trigger
-      res.status(200).json({ message: 'Loan updated successfully!' });
+  //     // Send a response to the webhook trigger
+  //     res.status(200).json({ message: 'Loan updated successfully!' });
   
-    } catch (error) {
-      console.error('Error updating loan details:', error.message);
-      res.status(500).json({
-        message: 'Failed to update loan details',
-        error: error.message,
-      });
-    }
-  };
+  //   } catch (error) {
+  //     console.error('Error updating loan details:', error.message);
+  //     res.status(500).json({
+  //       message: 'Failed to update loan details',
+  //       error: error.message,
+  //     });
+  //   }
+  // };
   
