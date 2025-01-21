@@ -1,3 +1,5 @@
+import axios from "axios";
+
 export const updateDB = async (req, res) => {
     console.log("Triggered");
   
