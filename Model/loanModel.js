@@ -546,7 +546,7 @@ const loanSchema = new mongoose.Schema({
         employmentEndDate: { type: Date },
         selfEmployedIndicator:{type:Boolean},//Check if you are the Business Owner or Self-Employed
      },
-     additionalOtherIncome:{type:number},//Co-Borrower Other Monthly Incomes
+     additionalOtherIncome:{type:Number},//Co-Borrower Other Monthly Incomes
      userDefinedIncome:{type:Number},
      /////////Declarations/////////
      intentToOccupyIndicator:{type:Boolean},// Will you occupy the property as your primary residence?
