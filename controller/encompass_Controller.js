@@ -288,6 +288,7 @@ export const receiveLoan = async (req, res) => {
               })),
             }, 
           ],
+          baseLoanAmount: parseFloat(borrower.refinanceApplication.loanDetails.loanAmount),
           property: {
             city: borrower.borrowerPersonalDetails.currentAddress.city,
             county: borrower.borrowerPersonalDetails.currentAddress.county,
