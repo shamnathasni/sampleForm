@@ -349,7 +349,7 @@ const loanSchema = new mongoose.Schema({
         employmentEndDate: { type: Date },
         selfEmployedIndicator:{type:Boolean},//Check if you are the Business Owner or Self-Employed
      },
-     additionalOtherIncome:{type:number},//Borrower Other Monthly Incomes
+     additionalOtherIncome:{type:Number},//Borrower Other Monthly Incomes
      userDefinedIncome:{type:Number},
 /////////Declarations/////////
       intentToOccupyIndicator:{type:Boolean},// Will you occupy the property as your primary residence?
@@ -670,6 +670,6 @@ const loanSchema = new mongoose.Schema({
 })
 
 
-const Loan = mongoose.model("LoanModel",loanSchema)
+const Loan = mongoose.model("Loan",loanSchema)
 
 export default Loan
