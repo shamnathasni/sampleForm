@@ -167,6 +167,7 @@ const borrowerSchema = new mongoose.Schema(
         state: { type: String },
         zipCode: { type: String },
       },
+      currentForeignAddressIndicator:{type:Boolean},
       currentAddressHousing:{type:String},
       yearsofCurrentAddress:{type:Number},
       monthsofCurrentAddress:{type:Number},
@@ -181,9 +182,11 @@ const borrowerSchema = new mongoose.Schema(
         state: { type: String },
         zipCode: { type: String },
       },
+      formerForeignAddressIndicator:{type:Boolean},
       formerAddressHousing:{type:String},
       yearsofFormerAddress:{type:String},
       monthsofFormerAddress:{type:String},
+      // mailingAddressSameAsPresentIndicator:{type:Boolean},
       mailingAddress: {
         addressLine1: { type: String },
         city: { type: String },
@@ -193,6 +196,7 @@ const borrowerSchema = new mongoose.Schema(
         state: { type: String },
         zipCode: { type: String },
       },
+      mailingForeignAddressIndicator:{type:Boolean},
       canProvideInformation: { type: Boolean,
         //  required: true
          },

@@ -70,9 +70,18 @@ export const updateDB = async (req, res) => {
             JointCredit:response.data.JointCredit,
             ExpectedBorrowerCount:response.data.ExpectedBorrowerCount,
             borrowerCount:response.data.borrowerCount,
+            creditScoreToUse:response.data.creditScoreToUse,
+            creditReportReferenceIdentifier:response.data.applications[0].creditReportReferenceIdentifier,
             borrower:{
                 aliasName:response.data.applications[0].borrower.aliasName,
                 foreignAddressIndicator:response.data.applications[0].borrower.residences[0].foreignAddressIndicator,
+                authorizedCreditReportIndicator:response.data.applications[0].borrower.authorizedCreditReportIndicator,
+                authorizedCreditReportDate:response.data.applications[0].borrower.authorizedCreditReportDate,
+                creditReportAuthorizationMethod:response.data.applications[0].borrower.creditReportAuthorizationMethod,
+                experianCreditScore:response.data.applications[0].borrower.experianCreditScore,
+                transUnionScore:response.data.applications[0].borrower.transUnionScore,
+                equifaxScore:response.data.applications[0].borrower.equifaxScore,
+                minFicoScore:response.data.applications[0].borrower.minFicoScore,
                 
             },
             coBorrower:{
@@ -80,6 +89,13 @@ export const updateDB = async (req, res) => {
                 hmdaNoCoApplicantIndicator:response.data.applications[0].coborrower.hmdaNoCoApplicantIndicator,
                 printOnAdditionalBorrowerPage:response.data.applications[0].coborrower.printOnAdditionalBorrowerPage,
                 foreignAddressIndicator:response.data.applications[0].coborrower.residences[0].foreignAddressIndicator,
+                authorizedCreditReportIndicator:response.data.applications[0].coborrower.authorizedCreditReportIndicator,
+                authorizedCreditReportDate:response.data.applications[0].coborrower.authorizedCreditReportDate,
+                creditReportAuthorizationMethod:response.data.applications[0].coborrower.creditReportAuthorizationMethod,
+                experianCreditScore:response.data.applications[0].coborrower.experianCreditScore,
+                transUnionScore:response.data.applications[0].coborrower.transUnionScore,
+                equifaxScore:response.data.applications[0].coborrower.equifaxScore,
+                minFicoScore:response.data.applications[0].coborrower.minFicoScore,
             },
 
         } }
@@ -118,9 +134,22 @@ export const updateDB = async (req, res) => {
           zipCode:response.data.applications[0].borrower.residences[1].addressPostalCode,
           Country:response.data.applications[0].borrower.residences[1].country,
         },
-        yearsofFormerAddress:response.data.applications[0].borrower.residences[0].durationTermYears,
-        monthsofFormerAddress:response.data.applications[0].borrower.residences[0].durationTermMonths,
-        formerAddressHousing:response.data.applications[0].borrower.residences[0].residencyBasisType,
+        formerForeignAddressIndicator:response.data.applications[0].borrower.residences[1].foreignAddressIndicator,
+        yearsofFormerAddress:response.data.applications[0].borrower.residences[1].durationTermYears,
+        monthsofFormerAddress:response.data.applications[0].borrower.residences[1].durationTermMonths,
+        formerAddressHousing:response.data.applications[0].borrower.residences[1].residencyBasisType,
+        sameAsMailingAddress:response.data.applications[0].borrower.mailingAddressSameAsPresentIndicator ,
+        mailingAddress: {
+          addressLine1: response.data.applications[0].borrower.mailingAddress.urla2020StreetAddress,
+          city: response.data.applications[0].borrower.mailingAddress.addressCity,
+          UnitType: response.data.applications[0].borrower.mailingAddress.addressUnitDesignatorType,
+          unit: response.data.applications[0].borrower.mailingAddress.addressUnitIdentifier,
+          state: response.data.applications[0].borrower.mailingAddress.addressState,
+          zipCode: response.data.applications[0].borrower.mailingAddress.addressPostalCode,
+          Country: response.data.applications[0].borrower.mailingAddress.country,
+        },
+        mailingForeignAddressIndicator:response.data.applications[0].borrower.mailingAddress.foreignAddressIndicator,
+
         },
         coBorrower:{
             firstName :response.data.applications[0].coborrower.firstName,
@@ -157,6 +186,12 @@ export const updateDB = async (req, res) => {
               zipCode:response.data.applications[0].coborrower.residences[1].addressPostalCode,
               Country:response.data.applications[0].coborrower.residences[1].country,
             },
+            formerForeignAddressIndicator:response.data.applications[0].coborrower.residences[1].foreignAddressIndicator,
+            yearsofFormerAddress:response.data.applications[0].coborrower.residences[1].durationTermYears,
+            monthsofFormerAddress:response.data.applications[0].coborrower.residences[1].durationTermMonths,
+            formerAddressHousing:response.data.applications[0].coborrower.residences[1].residencyBasisType,
+            sameAsMailingAddress:response.data.applications[0].borrower.mailingAddressSameAsPresentIndicator ,
+
           }, 
         refinanceApplication:{
             personInfo:{ dateOfBirth :response.data.applications[0].borrower.birthDate,}

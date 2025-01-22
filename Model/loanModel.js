@@ -244,13 +244,13 @@ const loanSchema = new mongoose.Schema({
     cashFromToBorrowerAmount:{type:Number},///Cash From/To the Borrower (Line H minus Line K and Line N)
 
     borrower:{
+      realEstateDoesNotApply:{type:Boolean},
+      otherLiabilitiesDoesNotApply:{type:Boolean},
+      giftsAndGrantsIndicatorBor:{type:Boolean},//Does Not Apply
       //////borrower Information///////////
       aliasName:{type:String},
       foreignAddressIndicator:{type:Boolean},
-      //////////////////////////////////////////
-        realEstateDoesNotApply:{type:Boolean},
-        otherLiabilitiesDoesNotApply:{type:Boolean},
-        giftsAndGrantsIndicatorBor:{type:Boolean},//Does Not Apply
+      //////////////credit////////////////////////////
         authorizedCreditReportIndicator:{type:Boolean},
         authorizedCreditReportDate:{type:Date},
         creditReportAuthorizationMethod:{type:String},
@@ -450,17 +450,24 @@ const loanSchema = new mongoose.Schema({
 },
     
     coBorrower:{
+      realEstateDoesNotApply:{type:Boolean},
+      otherLiabilitiesDoesNotApply:{type:Boolean},
+      otherAssetsDoesNotApply:{type:Boolean},
+      giftsAndGrantsIndicatorBor:{type:Boolean},//Does Not Apply
       ///borrower information///
       hmdaNoCoApplicantIndicator:{type:Boolean},
       printOnAdditionalBorrowerPage:{type:Boolean},
       aliasName:{type:String},
       foreignAddressIndicator:{type:Boolean},
-      /////////////////////////////////////////////
-        realEstateDoesNotApply:{type:Boolean},
-        otherLiabilitiesDoesNotApply:{type:Boolean},
-        otherAssetsDoesNotApply:{type:Boolean},
-        authorizedCreditReportIndicator:{type:Boolean},//Does not apply to
-        giftsAndGrantsIndicatorBor:{type:Boolean},//Does Not Apply
+      /////////////////credit////////////////////////////
+      authorizedCreditReportIndicator:{type:Boolean},
+      authorizedCreditReportDate:{type:Date},
+      creditReportAuthorizationMethod:{type:String},
+      experianCreditScore:{type:String},
+      transUnionScore:{type:String},
+      equifaxScore:{type:String},
+      minFicoScore:{type:String},
+       
 ///////Employment & Income/////
         currentEmploymentDoesNotApply:{type:Boolean},//Does not apply to
         employerName:{type:String},

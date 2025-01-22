@@ -226,6 +226,7 @@ export const receiveLoan = async (req, res) => {
                   addressState: borrower.borrowerPersonalDetails.mailingAddress.state,
                   addressStreetLine1: borrower.borrowerPersonalDetails.mailingAddress.addressLine1,
                 },
+                mailingAddressSameAsPresentIndicator:borrower.borrowerPersonalDetails.sameAsMailingAddress,
                 maritalStatusType: borrower.borrowerPersonalDetails.maritalStatus,
                 middleName: borrower.borrowerPersonalDetails.middleName,
                 priorPropertyTitleType: borrowerProfile.demographic.previousPropertyOwnership.titleHeld,
@@ -265,6 +266,7 @@ export const receiveLoan = async (req, res) => {
                   addressState: borrower.coBorrower.mailingAddress.state,
                   addressStreetLine1: borrower.coBorrower.mailingAddress.addressLine1,
                 },
+                mailingAddressSameAsPresentIndicator:borrower.borrowerPersonalDetails.sameAsMailingAddress,
                 maritalStatusType: borrower.coBorrower.maritalStatus,
                 middleName: borrower.coBorrower.middleName,
                 domesticRelationshipType: borrower.coBorrower.domesticRelationshipType,
@@ -421,8 +423,9 @@ export const getLoan = async (req, res) => {
       `https://api.elliemae.com/encompass/v3/loans/${loanId}`,
       config
     );
-    console.log(response.data.applications[0].borrower.residences[0].urla2020StreetAddress,"res");
-    console.log(response.data.applications[0].coborrower.residences[0].urla2020StreetAddress,"res2");
+    console.log(response.data.applications[0].borrower.minFicoScore,"res");
+    console.log(response.data.creditScoreToUse,"res2");
+    console.log(response.data.applications[0].creditReportReferenceIdentifier,"res3");
 
     // Send the response back to the client
     res.status(200).json(response.data);
