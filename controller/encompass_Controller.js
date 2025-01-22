@@ -23,7 +23,8 @@ export const submitLoan = async (req, res) => {
 
   // Forward the received data to another internal route
   axios
-    .post("https://encompass.loanofficercrm.ai/receive", data)
+    // .post("https://encompass.loanofficercrm.ai/receive", data)
+    .post("http://localhost:3000/receive", data)
     .then((response) => {
       res.json({
         message: "Data forwarded to /receive route",
@@ -182,7 +183,7 @@ export const receiveLoan = async (req, res) => {
                 bankruptcyIndicatorChapterEleven: borrowerProfile.declarations.financialHistory.bankruptcyType.chapter11,
                 bankruptcyIndicatorChapterTwelve: borrowerProfile.declarations.financialHistory.bankruptcyType.chapter12,
                 bankruptcyIndicatorChapterThirteen: borrowerProfile.declarations.financialHistory.bankruptcyType.chapter13,
-                birthDate: new Date(borrower.refinanceApplication.dateOfBirth) ||
+                birthDate: new Date(borrower.refinanceApplication.personInfo.dateOfBirth) ||
                     new Date(borrower.purchaseApplication.personInfo.dateOfBirth),
                 dependentCount: parseFloat(borrowerProfile.demographic.numberOfDependents) || 0,
                 dependentsAgesDescription: getDependentsAgesDescription(borrowerProfile.demographic.dependents),
@@ -213,10 +214,11 @@ export const receiveLoan = async (req, res) => {
                   },
                 ],
                 firstName: borrower.borrowerPersonalDetails.firstName,
+                homePhoneNumber: borrower.borrowerPersonalDetails.phoneNumber,
                 hmdaGenderType: borrowerProfile.demographic.sex,
                 hmdaEthnicityReportedFields: borrowerProfile.demographic.ethnicity,
                 hmdaEthnicityType: borrowerProfile.demographic.ethnicity,
-                citizenshipResidencyType: borrowerProfile.declarations.financialHistory.usCitizenshipStatus,
+                urla2020CitizenshipResidencyType:borrowerProfile?.declarations?.financialHistory?.usCitizenshipStatus? borrowerProfile.declarations.financialHistory.usCitizenshipStatus.replace(/\./g, "").replace(/\s+/g, ""): "",
                 lastName: borrower.borrowerPersonalDetails.lastName,
                 mailingAddress: {
                   addressCity: borrower.borrowerPersonalDetails.mailingAddress.city,
@@ -228,7 +230,6 @@ export const receiveLoan = async (req, res) => {
                 middleName: borrower.borrowerPersonalDetails.middleName,
                 priorPropertyTitleType: borrowerProfile.demographic.previousPropertyOwnership.titleHeld,
                 priorPropertyUsageType: borrowerProfile.demographic.previousPropertyOwnership.propertyUse,
-                mobilePhone: borrower.borrowerPersonalDetails.phoneNumber,
                 residences: [
                   {
                     addressCity: borrower.borrowerPersonalDetails.currentAddress.city,
@@ -266,15 +267,14 @@ export const receiveLoan = async (req, res) => {
                 },
                 maritalStatusType: borrower.coBorrower.maritalStatus,
                 middleName: borrower.coBorrower.middleName,
-                mobilePhone: borrower.coBorrower.phoneNumber,
                 domesticRelationshipType: borrower.coBorrower.domesticRelationshipType,
                 residences: [
                   {
                     addressCity: borrower.coBorrower.currentAddress.city,
                     addressPostalCode: borrower.coBorrower.currentAddress.zipCode,
                     addressState: borrower.coBorrower.currentAddress.state,
-                    addressStreetLine1: borrower.coBorrower.currentAddress.addressLine1,
-                    addressCounty: borrower.coBorrower.currentAddress.county,
+                    urla2020StreetAddress: borrower.coBorrower.currentAddress.addressLine1,
+                    country: borrower.coBorrower.currentAddress.country,
                   },
                 ],
                 suffixToName: borrower.coBorrower.suffix,
@@ -291,7 +291,7 @@ export const receiveLoan = async (req, res) => {
               })),
             }, 
           ],
-          baseLoanAmount: parseFloat(borrower.refinanceApplication.loanDetails.loanAmount),
+          baseLoanAmount: parseFloat(borrower.refinanceApplication.loanDetails.loanAmount) || 0,
           property: {
             city: borrower.borrowerPersonalDetails.currentAddress.city,
             county: borrower.borrowerPersonalDetails.currentAddress.county,
@@ -307,7 +307,7 @@ export const receiveLoan = async (req, res) => {
           },
           purchasePriceAmount: parseFloat(borrower.purchaseApplication.loanDetails.purchasePrice),
           ratelock: {
-            baseLoanAmount: parseFloat(borrower.refinanceApplication.loanDetails.loanAmount),
+            baseLoanAmount: parseFloat(borrower.refinanceApplication.loanDetails.loanAmount) || 0,
             // currentNumberOfDays: 10,
             gsePropertyType: borrower.refinanceApplication.property.propertyType || borrower.purchaseApplication.property.propertyType,
           },
@@ -421,6 +421,8 @@ export const getLoan = async (req, res) => {
       `https://api.elliemae.com/encompass/v3/loans/${loanId}`,
       config
     );
+    console.log(response.data.applications[0].borrower.residences[0].urla2020StreetAddress,"res");
+    console.log(response.data.applications[0].coborrower.residences[0].urla2020StreetAddress,"res2");
 
     // Send the response back to the client
     res.status(200).json(response.data);

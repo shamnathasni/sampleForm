@@ -11,7 +11,7 @@ router.get('/loan/:loanId',getLoan)
 router.get('/createSubscription', createSubscription);
 router.post('/submit', submitLoan);
 router.post('/receive', receiveLoan);
-router.post('/updateLoan',updateDB)
+router.post('/updateLoan/:loanId',updateDB)
 
 
 export default router;  // Make sure to export the router

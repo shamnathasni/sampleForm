@@ -13,6 +13,7 @@ const loanSchema = new mongoose.Schema({
     IndividualCredit:{type:Boolean},
     JointCredit:{type:Boolean},
     ExpectedBorrowerCount:{type:Number},
+    borrowerCount:{type:Number},
     creditScoreToUse:{type:Number},//Credit Score for Decision Making
     creditReportReferenceIdentifier:{type:String},//Credit Reference #
     //Credit Information & Ordering
@@ -243,6 +244,10 @@ const loanSchema = new mongoose.Schema({
     cashFromToBorrowerAmount:{type:Number},///Cash From/To the Borrower (Line H minus Line K and Line N)
 
     borrower:{
+      //////borrower Information///////////
+      aliasName:{type:String},
+      foreignAddressIndicator:{type:Boolean},
+      //////////////////////////////////////////
         realEstateDoesNotApply:{type:Boolean},
         otherLiabilitiesDoesNotApply:{type:Boolean},
         giftsAndGrantsIndicatorBor:{type:Boolean},//Does Not Apply
@@ -445,6 +450,12 @@ const loanSchema = new mongoose.Schema({
 },
     
     coBorrower:{
+      ///borrower information///
+      hmdaNoCoApplicantIndicator:{type:Boolean},
+      printOnAdditionalBorrowerPage:{type:Boolean},
+      aliasName:{type:String},
+      foreignAddressIndicator:{type:Boolean},
+      /////////////////////////////////////////////
         realEstateDoesNotApply:{type:Boolean},
         otherLiabilitiesDoesNotApply:{type:Boolean},
         otherAssetsDoesNotApply:{type:Boolean},
